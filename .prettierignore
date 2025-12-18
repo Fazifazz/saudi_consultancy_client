@@ -15,3 +15,8 @@ public/**/*.svg
 public/**/*.png
 public/**/*.jpg
 
+.vscode/*
+.github/*
+.gitignore
+Dockerfile
+Dockerignore

@@ -1,5 +1,10 @@
-import { ComponentExample } from '@/components/component-example';
+import { TestForm } from '@/components/forms/TestForm';
 
 export default function Page() {
-  return <ComponentExample />;
+  return (
+    <main className="min-h-screen w-full flex flex-col items-center justify-center gap-3 bg-background">
+      <h2 className="text-3xl">Exmaple Form</h2>
+      <TestForm />
+    </main>
+  );
 }
