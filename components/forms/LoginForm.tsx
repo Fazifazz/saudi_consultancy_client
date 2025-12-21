@@ -25,6 +25,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     control,
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const onSubmit = (values: LoginSchema) => {
