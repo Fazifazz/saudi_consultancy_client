@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cookies } from "next/headers";
 import { Geist, Geist_Mono, Figtree } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'sonner';
