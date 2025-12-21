@@ -20,3 +20,4 @@ public/**/*.jpg
 .gitignore
 Dockerfile
 Dockerignore
+pnpm-lock.yaml
