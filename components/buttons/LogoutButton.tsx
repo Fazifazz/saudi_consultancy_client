@@ -19,11 +19,7 @@ export function LogoutButton() {
   };
 
   return (
-    <Button
-      variant="destructive"
-      onClick={onLogout}
-      disabled={isPending}
-    >
+    <Button variant="destructive" onClick={onLogout} disabled={isPending}>
       {isPending ? 'Logging out...' : 'Logout'}
     </Button>
   );

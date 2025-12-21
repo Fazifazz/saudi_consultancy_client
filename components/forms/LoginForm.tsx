@@ -3,12 +3,7 @@
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field';
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { loginAction } from '@/app/actions/login';
 import { useRouter } from 'next/navigation';
@@ -27,7 +22,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     register,
     handleSubmit,
     formState: { errors },
-    control
+    control,
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
@@ -65,7 +60,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
                 control={control}
                 type="email"
                 name="email"
-                label='Email'
+                label="Email"
                 placeholder="m@example.com"
                 autoComplete="off"
               />
@@ -74,18 +69,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-4 hover:underline"
-                  >
+                  <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
                     Forgot your password?
                   </a>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  {...register('password')}
-                />
+                <Input id="password" type="password" {...register('password')} />
                 {errors.password && (
                   <FieldDescription className="text-red-500">
                     {errors.password.message}
@@ -108,8 +96,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       </Card>
 
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our{' '}
-        <a href="#">Terms of Service</a> and{' '}
+        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{' '}
         <a href="#">Privacy Policy</a>.
       </FieldDescription>
     </div>
