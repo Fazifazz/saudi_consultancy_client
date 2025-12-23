@@ -5,6 +5,8 @@ import { logoutAction } from '@/app/actions/logout';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useTransition } from 'react';
+import { DropdownMenuItem } from '../ui/dropdown-menu';
+import { LogOut } from 'lucide-react';
 
 export function LogoutButton() {
   const router = useRouter();
@@ -19,8 +21,9 @@ export function LogoutButton() {
   };
 
   return (
-    <Button variant="destructive" onClick={onLogout} disabled={isPending}>
-      {isPending ? 'Logging out...' : 'Logout'}
-    </Button>
+    <DropdownMenuItem onClick={onLogout} disabled={isPending}>
+      <LogOut />
+      {isPending ? 'Logging out...' : 'Log out'}
+    </DropdownMenuItem>
   );
 }
