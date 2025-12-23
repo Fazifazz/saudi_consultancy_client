@@ -17,6 +17,7 @@ const CommonSelect = <TFormValues extends FieldValues>({
   control,
   name,
   label,
+  placeholder,
   options,
   onChangeCallback,
 }: CommonSelectProps<TFormValues>) => {
@@ -32,9 +33,9 @@ const CommonSelect = <TFormValues extends FieldValues>({
         return (
           <Field data-invalid={fieldState.invalid}>
             <FieldLabel>{label}</FieldLabel>
-            <Select onValueChange={onValueChange as any} value={field.value}>
+            <Select onValueChange={onValueChange} value={field.value}>
               <SelectTrigger>
-                <SelectValue />
+                <SelectValue placeholder={placeholder} />
               </SelectTrigger>
               <SelectContent>
                 {options?.map((option) => (

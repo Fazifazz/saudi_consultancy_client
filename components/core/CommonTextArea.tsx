@@ -7,7 +7,6 @@ interface CommonTextAreaProps<
   TFormValues extends FieldValues,
 > extends InputHTMLAttributes<HTMLTextAreaElement> {
   label: string;
-  rows?: number;
   name: Path<TFormValues>;
   control: UseFormReturn<TFormValues>['control'];
 }
@@ -17,7 +16,6 @@ const CommonTextArea = <TFormValues extends FieldValues>({
   name,
   label,
   placeholder,
-  rows = 3,
 }: CommonTextAreaProps<TFormValues>) => {
   return (
     <Controller
@@ -26,7 +24,7 @@ const CommonTextArea = <TFormValues extends FieldValues>({
       render={({ field, fieldState }) => (
         <Field data-invalid={fieldState.invalid}>
           <FieldLabel>{label}</FieldLabel>
-          <Textarea {...field} placeholder={placeholder} rows={rows} />
+          <Textarea {...field} placeholder={placeholder} />
           {fieldState.error && <FieldError errors={[fieldState.error]} />}
         </Field>
       )}

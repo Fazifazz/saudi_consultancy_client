@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '../ui/calendar';
 import { cn } from '@/lib/utils';
-import { Button, buttonVariants } from '../ui/button';
+import { Button } from '../ui/button';
 
 interface CommonDatePickerProps<
   TFormValues extends FieldValues,
@@ -15,7 +15,6 @@ interface CommonDatePickerProps<
   name: Path<TFormValues>;
   control: UseFormReturn<TFormValues>['control'];
   disableBefore?: Date;
-  triggerClassNames?: string;
 }
 
 const CommonDatePicker = <TFormValues extends FieldValues>({
@@ -24,7 +23,6 @@ const CommonDatePicker = <TFormValues extends FieldValues>({
   label,
   placeholder = 'Pick a date',
   disableBefore,
-  triggerClassNames,
 }: CommonDatePickerProps<TFormValues>) => {
   return (
     <Controller
@@ -35,16 +33,17 @@ const CommonDatePicker = <TFormValues extends FieldValues>({
           <FieldLabel>{label}</FieldLabel>
 
           <Popover>
-            <PopoverTrigger
-              className={cn(
-                buttonVariants({ variant: 'outline' }),
-                'w-[240px] pl-3 text-left font-normal flex items-center',
-                !field.value && 'text-muted-foreground',
-                triggerClassNames
-              )}
-            >
-              <span>{field.value ? format(field.value, 'PPP') : placeholder}</span>
-              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  'w-[240px] pl-3 text-left font-normal',
+                  !field.value && 'text-muted-foreground'
+                )}
+              >
+                {field.value ? format(field.value, 'PPP') : placeholder}
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
             </PopoverTrigger>
 
             <PopoverContent className="w-auto p-0" align="start">
