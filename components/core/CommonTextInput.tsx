@@ -1,22 +1,15 @@
-import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form'
 import { Field, FieldError, FieldLabel } from '../ui/field';
 import { Input } from '../ui/input';
 import { InputHTMLAttributes } from 'react';
 
-interface CommonTextInputProps<
-  TFormValues extends FieldValues,
-> extends InputHTMLAttributes<HTMLInputElement> {
+interface CommonTextInputProps<TFormValues extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   name: Path<TFormValues>;
-  control: UseFormReturn<TFormValues>['control'];
+  control: UseFormReturn<TFormValues>["control"];
 }
 
-const CommonTextInput = <TFormValues extends FieldValues>({
-  control,
-  name,
-  label,
-  placeholder,
-}: CommonTextInputProps<TFormValues>) => {
+const CommonTextInput = <TFormValues extends FieldValues>({ control, name, label, placeholder }: CommonTextInputProps<TFormValues>) => {
   return (
     <Controller
       name={name}
@@ -29,7 +22,7 @@ const CommonTextInput = <TFormValues extends FieldValues>({
         </Field>
       )}
     />
-  );
-};
+  )
+}
 
-export default CommonTextInput;
+export default CommonTextInput

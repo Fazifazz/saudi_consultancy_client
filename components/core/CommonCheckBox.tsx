@@ -1,56 +1,38 @@
-import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import { InputHTMLAttributes } from 'react';
 import { Checkbox } from '../ui/checkbox';
 
-interface CommonCheckBoxProps<TFormValues extends FieldValues> {
+interface CommonCheckBoxProps<TFormValues extends FieldValues> extends InputHTMLAttributes<HTMLSelectElement> {
   name: Path<TFormValues>;
-  showErrorOnEachItem?: boolean;
-  option: { value: string; label: string };
-  control: UseFormReturn<TFormValues>['control'];
+  option: { value: string, label: string };
+  control: UseFormReturn<TFormValues>["control"];
 }
 
-const CommonCheckBox = <TFormValues extends FieldValues>({
-  control,
-  name,
-  option,
-  showErrorOnEachItem = false,
-}: CommonCheckBoxProps<TFormValues>) => {
+const CommonCheckBox = <TFormValues extends FieldValues>({ control, name, option }: CommonCheckBoxProps<TFormValues>) => {
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState }) => {
-        // Ensure value is always an array (important for edit mode)
-        const value: string[] = Array.isArray(field.value) ? field.value : [];
+      render={({ field }) => {
+        const isChecked = field.value?.includes(option.value);
 
-        const isChecked = value.includes(option.value);
-
-        const handleCheckedChange = (checked: boolean) => {
-          if (checked) {
-            field.onChange([...value, option.value]);
+        const toggle = () => {
+          if (isChecked) {
+            field.onChange(field.value?.filter((id: string) => id !== option.value));
           } else {
-            field.onChange(value.filter((v) => v !== option.value));
+            field.onChange([...(field.value ?? []), option.value]);
           }
         };
 
         return (
-          <div className="flex flex-col gap-1">
-            <label className="flex items-center gap-2">
-              <Checkbox
-                checked={isChecked}
-                onCheckedChange={handleCheckedChange}
-                aria-invalid={!!fieldState.error}
-              />
-              <span>{option.label}</span>
-            </label>
-
-            {fieldState.error && showErrorOnEachItem && (
-              <p className="text-sm text-destructive">{fieldState.error.message}</p>
-            )}
-          </div>
+          <label className="flex items-center gap-2">
+            <Checkbox checked={isChecked} onCheckedChange={toggle} />
+            {option.label}
+          </label>
         );
       }}
     />
-  );
-};
+  )
+}
 
-export default CommonCheckBox;
+export default CommonCheckBox
