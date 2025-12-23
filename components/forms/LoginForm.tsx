@@ -13,6 +13,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginSchema } from '@/lib/validations/auth';
 import CommonTextInput from '../core/CommonTextInput';
+import { successToast } from '../toast/SuccessToast';
+import { destructiveToast } from '../toast/DestructiveToast';
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) {
   const router = useRouter();
@@ -40,11 +42,12 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       const result = await loginAction(formData);
 
       if (result?.error) {
-        toast.error(result.error);
+        destructiveToast(result.error
+        )
         return;
       }
 
-      toast.success('Logged in successfully!');
+      successToast('Logged in successfully!');
       router.replace('/');
     });
   };

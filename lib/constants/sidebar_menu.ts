@@ -9,6 +9,7 @@ export type SidebarMenuItem = {
     url: string;
   }[];
   isActive?: boolean;
+  className?: string;
 };
 
 export const SIDEBAR_MENU: SidebarMenuItem[] = [

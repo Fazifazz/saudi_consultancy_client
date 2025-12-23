@@ -55,7 +55,9 @@ export default async function AuthLayout({
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <main>{children}</main>
+          <main className='bg-background p-5'>
+            {children}
+          </main>
         </SidebarInset>
       </SidebarProvider>
     </UserProvider>
