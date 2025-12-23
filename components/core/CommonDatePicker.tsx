@@ -1,17 +1,19 @@
-import React, { InputHTMLAttributes } from 'react'
+import React, { InputHTMLAttributes } from 'react';
 import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { Field, FieldError, FieldLabel } from '../ui/field';
-import { format } from "date-fns"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { CalendarIcon } from "lucide-react"
-import { Calendar } from "../ui/calendar"
-import { cn } from "@/lib/utils"
+import { format } from 'date-fns';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { CalendarIcon } from 'lucide-react';
+import { Calendar } from '../ui/calendar';
+import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 
-interface CommonDatePickerProps<TFormValues extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
+interface CommonDatePickerProps<
+  TFormValues extends FieldValues,
+> extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   name: Path<TFormValues>;
-  control: UseFormReturn<TFormValues>["control"];
+  control: UseFormReturn<TFormValues>['control'];
   disableBefore?: Date;
 }
 
@@ -19,7 +21,7 @@ const CommonDatePicker = <TFormValues extends FieldValues>({
   control,
   name,
   label,
-  placeholder = "Pick a date",
+  placeholder = 'Pick a date',
   disableBefore,
 }: CommonDatePickerProps<TFormValues>) => {
   return (
@@ -35,11 +37,11 @@ const CommonDatePicker = <TFormValues extends FieldValues>({
               <Button
                 variant="outline"
                 className={cn(
-                  "w-[240px] pl-3 text-left font-normal",
-                  !field.value && "text-muted-foreground"
+                  'w-[240px] pl-3 text-left font-normal',
+                  !field.value && 'text-muted-foreground'
                 )}
               >
-                {field.value ? format(field.value, "PPP") : placeholder}
+                {field.value ? format(field.value, 'PPP') : placeholder}
                 <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -58,7 +60,7 @@ const CommonDatePicker = <TFormValues extends FieldValues>({
         </Field>
       )}
     />
-  )
-}
+  );
+};
 
-export default CommonDatePicker
+export default CommonDatePicker;

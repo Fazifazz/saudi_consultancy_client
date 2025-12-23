@@ -1,15 +1,22 @@
-import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { Field, FieldError, FieldLabel } from '../ui/field';
 import { InputHTMLAttributes } from 'react';
 import { Textarea } from '../ui/textarea';
 
-interface CommonTextAreaProps<TFormValues extends FieldValues> extends InputHTMLAttributes<HTMLTextAreaElement> {
+interface CommonTextAreaProps<
+  TFormValues extends FieldValues,
+> extends InputHTMLAttributes<HTMLTextAreaElement> {
   label: string;
   name: Path<TFormValues>;
-  control: UseFormReturn<TFormValues>["control"];
+  control: UseFormReturn<TFormValues>['control'];
 }
 
-const CommonTextArea = <TFormValues extends FieldValues>({ control, name, label, placeholder }: CommonTextAreaProps<TFormValues>) => {
+const CommonTextArea = <TFormValues extends FieldValues>({
+  control,
+  name,
+  label,
+  placeholder,
+}: CommonTextAreaProps<TFormValues>) => {
   return (
     <Controller
       name={name}
@@ -22,7 +29,7 @@ const CommonTextArea = <TFormValues extends FieldValues>({ control, name, label,
         </Field>
       )}
     />
-  )
-}
+  );
+};
 
-export default CommonTextArea
+export default CommonTextArea;

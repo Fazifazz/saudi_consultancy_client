@@ -1,14 +1,20 @@
-import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form'
+import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { InputHTMLAttributes } from 'react';
 import { Checkbox } from '../ui/checkbox';
 
-interface CommonCheckBoxProps<TFormValues extends FieldValues> extends InputHTMLAttributes<HTMLSelectElement> {
+interface CommonCheckBoxProps<
+  TFormValues extends FieldValues,
+> extends InputHTMLAttributes<HTMLSelectElement> {
   name: Path<TFormValues>;
-  option: { value: string, label: string };
-  control: UseFormReturn<TFormValues>["control"];
+  option: { value: string; label: string };
+  control: UseFormReturn<TFormValues>['control'];
 }
 
-const CommonCheckBox = <TFormValues extends FieldValues>({ control, name, option }: CommonCheckBoxProps<TFormValues>) => {
+const CommonCheckBox = <TFormValues extends FieldValues>({
+  control,
+  name,
+  option,
+}: CommonCheckBoxProps<TFormValues>) => {
   return (
     <Controller
       name={name}
@@ -32,7 +38,7 @@ const CommonCheckBox = <TFormValues extends FieldValues>({ control, name, option
         );
       }}
     />
-  )
-}
+  );
+};
 
-export default CommonCheckBox
+export default CommonCheckBox;
