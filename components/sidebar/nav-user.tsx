@@ -1,6 +1,6 @@
 'use client';
 
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
+import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Moon, Sparkles, Sun } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -20,9 +20,11 @@ import {
 } from '@/components/ui/sidebar';
 import { useUser } from '@/context/UserContext';
 import { LogoutButton } from '../buttons/LogoutButton';
+import { useTheme } from 'next-themes';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
+  const { theme, setTheme } = useTheme()
   const {
     user,
   }: {
@@ -33,7 +35,6 @@ export function NavUser() {
     };
   } = useUser();
 
-  console.log('userL: ', user);
 
   return (
     <SidebarMenu>
@@ -79,9 +80,20 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+              <DropdownMenuItem
+                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              >
+                {theme === 'light' ? (
+                  <>
+                    <Moon />
+                    Dark Mode
+                  </>
+                ) : (
+                  <>
+                    <Sun />
+                    Light Mode
+                  </>
+                )}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -89,10 +101,6 @@ export function NavUser() {
               <DropdownMenuItem>
                 <BadgeCheck />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />
