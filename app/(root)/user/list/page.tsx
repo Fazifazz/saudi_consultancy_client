@@ -1,6 +1,5 @@
-import { fetchUsers } from "@/lib/api/mock-users"
-import UsersTableClient from "../../../user/list/users-table-client"
-
+import { fetchUsers } from "@/lib/api/users"
+import UsersTableClient from "./users-table-client"
 
 interface PageProps {
     searchParams: {
@@ -8,6 +7,7 @@ interface PageProps {
         limit?: string
         from?: string
         to?: string
+        role?: string
         search?: string
     }
 }
@@ -18,13 +18,15 @@ export default async function UsersPage({
     const searchParam = await searchParams
     const page = Number(searchParam.page ?? 1)
     const limit = Number(searchParam.limit ?? 10)
+    console.log({role: searchParam.role})
 
     const users = await fetchUsers({
         page,
         limit,
         search: searchParam.search,
-        from: searchParam.from,
-        to: searchParam.to,
+        role: searchParam.role,
+        // from: searchParam.from,
+        // to: searchParam.to,
     })
 
     return (
@@ -32,7 +34,7 @@ export default async function UsersPage({
             <h1 className="text-xl font-semibold">Users</h1>
 
             {/* Client table only receives data */}
-            <UsersTableClient users={users} />
+            <UsersTableClient usersResponse={users} />
         </div>
     )
 }
