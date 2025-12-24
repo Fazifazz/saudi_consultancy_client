@@ -21,8 +21,11 @@ export default function UsersTableClient({
   return (
     <TableProvider data={users} columns={userColumns}>
       <div className="flex flex-wrap gap-2">
-        
-        <TableSearch column="username" />
+
+        <TableSearch
+          column="username"
+          syncToUrl
+          paramName="search" />
 
         <TableFilter
           column="role"
@@ -38,13 +41,23 @@ export default function UsersTableClient({
         <TableDateFilter
           column="createdAt"
           mode="range"
+          syncToUrl
+          paramName="range_createdAt"
         />
 
         <ColumnVisibility />
       </div>
 
       <DataTable />
-      <Pagination />
+      <Pagination
+        syncToUrl
+        pageParam="page"
+        limitParam="limit"
+        defaultPageSize={20}
+        currentPage={usersResponse.meta.page}
+        totalPages={usersResponse.meta.pages}
+        totalItems={usersResponse.meta.total}
+      />
     </TableProvider>
   )
 }
