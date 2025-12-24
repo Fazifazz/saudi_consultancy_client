@@ -1,4 +1,4 @@
-import { LucideIcon, Users } from 'lucide-react';
+import { IdCard, LucideIcon, Users } from 'lucide-react';
 
 export type SidebarMenuItem = {
   title: string;
@@ -15,8 +15,18 @@ export type SidebarMenuItem = {
 export const SIDEBAR_MENU: SidebarMenuItem[] = [
   {
     title: 'Customer',
-    url: '/customer',
+    url: '#',
     icon: Users,
+    isActive: true,
+    items: [
+      { title: "Create", url: "/customer/create" },
+      { title: "List", url: "/customer/list" }
+    ]
+  },
+  {
+    title: 'Visa Details',
+    url: '/visa-details',
+    icon: IdCard,
     isActive: true,
   },
 ];
