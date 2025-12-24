@@ -1,6 +1,15 @@
 'use client';
 
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Moon, Sparkles, Sun } from 'lucide-react';
+import {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  LogOut,
+  Moon,
+  Sparkles,
+  Sun,
+} from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -24,7 +33,7 @@ import { useTheme } from 'next-themes';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
   const {
     user,
   }: {
@@ -34,7 +43,6 @@ export function NavUser() {
       image?: string;
     };
   } = useUser();
-
 
   return (
     <SidebarMenu>
@@ -80,9 +88,7 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              >
+              <DropdownMenuItem onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
                 {theme === 'light' ? (
                   <>
                     <Moon />

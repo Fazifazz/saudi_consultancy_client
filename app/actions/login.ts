@@ -19,11 +19,10 @@ export async function loginAction(formData: FormData) {
     let errorMessage = 'Invalid credentials';
     try {
       const data = await res.json();
-      console.log("data: ", data)
+      console.log('data: ', data);
       if (data?.error) errorMessage = String(data.error);
       else if (data?.message) errorMessage = String(data.message);
-    } catch {
-    }
+    } catch {}
     return { error: errorMessage };
   }
 

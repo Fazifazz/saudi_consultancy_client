@@ -19,9 +19,9 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     icon: Users,
     isActive: true,
     items: [
-      { title: "Create", url: "/customer/create" },
-      { title: "List", url: "/customer/list" }
-    ]
+      { title: 'Create', url: '/customer/create' },
+      { title: 'List', url: '/customer/list' },
+    ],
   },
   {
     title: 'Visa Details',

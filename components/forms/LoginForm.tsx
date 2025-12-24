@@ -42,8 +42,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       const result = await loginAction(formData);
 
       if (result?.error) {
-        destructiveToast(result.error
-        )
+        destructiveToast(result.error);
         return;
       }
 

@@ -43,15 +43,23 @@ export function NavMain({
             className="group/collapsible"
           >
             <SidebarMenuItem>
-              {item?.items && item.items?.length > 0 ? (<CollapsibleTrigger asChild>
-                <SidebarMenuButton className={cn('font-semibold text-base', item?.className)} tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>) : (
+              {item?.items && item.items?.length > 0 ? (
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton
+                    className={cn('font-semibold text-base', item?.className)}
+                    tooltip={item.title}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+              ) : (
                 <Link href={item.url}>
-                  <SidebarMenuButton className={cn('font-semibold text-base', item?.className)} tooltip={item.title}>
+                  <SidebarMenuButton
+                    className={cn('font-semibold text-base', item?.className)}
+                    tooltip={item.title}
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                   </SidebarMenuButton>
