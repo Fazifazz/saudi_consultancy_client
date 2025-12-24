@@ -8,7 +8,7 @@ import {
   ColumnVisibility,
 } from "@/components/commonTable"
 import { TableDateFilter } from "@/components/commonTable/controls/TableDateFilter"
-import { userColumns } from "@/components/tables/ExampleAPITableColumns"
+import { userColumns } from "@/app/(root)/example/list/from-api/ExampleAPITableColumns"
 import { IUser } from "@/types/user"
 
 export default function UsersTableClient({

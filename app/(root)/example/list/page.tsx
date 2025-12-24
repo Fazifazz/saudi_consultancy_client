@@ -7,7 +7,7 @@ import {
 } from "@/components/commonTable"
 import { TableFilter } from "@/components/commonTable/controls/TableFilter"
 import { TableDateFilter } from "@/components/commonTable/controls/TableDateFilter"
-import { userColumns } from "@/components/tables/ExampleTableColumns"
+import { userColumns } from "@/app/(root)/example/list/ExampleTableColumns"
 import { IUser } from "@/types/user"
 
 const usersMock: IUser[] = [

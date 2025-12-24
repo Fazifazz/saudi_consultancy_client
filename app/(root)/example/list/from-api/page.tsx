@@ -15,15 +15,16 @@ interface PageProps {
 export default async function UsersPage({
     searchParams,
 }: PageProps) {
-    const page = Number(searchParams.page ?? 1)
-    const limit = Number(searchParams.limit ?? 10)
+    const searchParam = await searchParams
+    const page = Number(searchParam.page ?? 1)
+    const limit = Number(searchParam.limit ?? 10)
 
     const users = await fetchUsers({
         page,
         limit,
-        search: searchParams.search,
-        from: searchParams.from,
-        to: searchParams.to,
+        search: searchParam.search,
+        from: searchParam.from,
+        to: searchParam.to,
     })
 
     return (
