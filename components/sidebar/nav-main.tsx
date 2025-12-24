@@ -13,6 +13,8 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export function NavMain({
   items,
@@ -22,6 +24,7 @@ export function NavMain({
     url: string;
     icon?: LucideIcon;
     isActive?: boolean;
+    className?: string;
     items?: {
       title: string;
       url: string;
@@ -40,15 +43,28 @@ export function NavMain({
             className="group/collapsible"
           >
             <SidebarMenuItem>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                  {item?.items && item.items?.length > 0 && (
+              {item?.items && item.items?.length > 0 ? (
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton
+                    className={cn('font-semibold text-base', item?.className)}
+                    tooltip={item.title}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  )}
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+              ) : (
+                <Link href={item.url}>
+                  <SidebarMenuButton
+                    className={cn('font-semibold text-base', item?.className)}
+                    tooltip={item.title}
+                  >
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                </Link>
+              )}
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (

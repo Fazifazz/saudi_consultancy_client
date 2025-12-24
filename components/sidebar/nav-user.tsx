@@ -1,6 +1,15 @@
 'use client';
 
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react';
+import {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  LogOut,
+  Moon,
+  Sparkles,
+  Sun,
+} from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -20,9 +29,11 @@ import {
 } from '@/components/ui/sidebar';
 import { useUser } from '@/context/UserContext';
 import { LogoutButton } from '../buttons/LogoutButton';
+import { useTheme } from 'next-themes';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
+  const { theme, setTheme } = useTheme();
   const {
     user,
   }: {
@@ -32,8 +43,6 @@ export function NavUser() {
       image?: string;
     };
   } = useUser();
-
-  console.log('userL: ', user);
 
   return (
     <SidebarMenu>
@@ -46,7 +55,7 @@ export function NavUser() {
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user?.image} alt={user.username} />
-                <AvatarFallback className="rounded-lg uppercase">
+                <AvatarFallback className="rounded-xl uppercase bg-gradient-to-br from-sky-400 to-blue-500 font-medium text-white">
                   {user.username?.slice(0, 2)}
                 </AvatarFallback>
               </Avatar>
@@ -67,7 +76,7 @@ export function NavUser() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user?.image} alt={user.username} />
-                  <AvatarFallback className="rounded-lg uppercase">
+                  <AvatarFallback className="rounded-xl uppercase bg-gradient-to-br from-sky-400 to-blue-500 font-medium text-white">
                     {user.username?.slice(0, 2)}
                   </AvatarFallback>
                 </Avatar>
@@ -79,9 +88,18 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+              <DropdownMenuItem onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+                {theme === 'light' ? (
+                  <>
+                    <Moon />
+                    Dark Mode
+                  </>
+                ) : (
+                  <>
+                    <Sun />
+                    Light Mode
+                  </>
+                )}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -89,10 +107,6 @@ export function NavUser() {
               <DropdownMenuItem>
                 <BadgeCheck />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Bell />

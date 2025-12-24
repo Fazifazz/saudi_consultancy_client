@@ -85,7 +85,7 @@ export function TestForm() {
   ];
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <Card className="w-full ">
       <CardHeader>
         <CardTitle>Bug Report</CardTitle>
         <CardDescription>Help us improve by reporting bugs you encounter.</CardDescription>
@@ -120,7 +120,6 @@ export function TestForm() {
               name="description"
               label="Description"
               placeholder="I'm having an issue with the login button on mobile."
-              rows={6}
               className="min-h-24 resize-none"
             />
 

@@ -16,7 +16,14 @@ export async function loginAction(formData: FormData) {
   });
 
   if (!res.ok) {
-    return { error: 'Invalid credentials' };
+    let errorMessage = 'Invalid credentials';
+    try {
+      const data = await res.json();
+      console.log('data: ', data);
+      if (data?.error) errorMessage = String(data.error);
+      else if (data?.message) errorMessage = String(data.message);
+    } catch {}
+    return { error: errorMessage };
   }
 
   const { token } = await res.json();
