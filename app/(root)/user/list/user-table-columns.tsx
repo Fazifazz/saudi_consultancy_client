@@ -52,39 +52,6 @@ export const userColumns: ColumnDef<IUser>[] = [
   {
     accessorKey: "createdAt",
     header: "Created At",
-    enableColumnFilter: true,
-
-    // 🔑 Date filter logic
-    filterFn: (row, columnId, filterValue) => {
-      if (!filterValue) return true
-
-      const rowDate = new Date(row.getValue(columnId))
-
-      if (filterValue.type === "single") {
-        const selected = new Date(filterValue.date)
-        return (
-          rowDate.toDateString() === selected.toDateString()
-        )
-      }
-
-      // Date range
-      const from = filterValue.from
-        ? new Date(filterValue.from)
-        : null
-      const to = filterValue.to
-        ? new Date(filterValue.to)
-        : null
-
-      if (from && to) {
-        return rowDate >= from && rowDate <= to
-      } else if (from) {
-        return rowDate >= from
-      } else if (to) {
-        return rowDate <= to
-      }
-
-      return true
-    },
   },
   {
     id: "actions",

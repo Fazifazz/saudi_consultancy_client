@@ -24,8 +24,8 @@ export default async function UsersPage({
         limit,
         search: searchParam.search,
         role: searchParam.role,
-        // from: searchParam.from,
-        // to: searchParam.to,
+        from: searchParam.from,
+        to: searchParam.to,
     })
 
     return (

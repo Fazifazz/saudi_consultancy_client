@@ -1,5 +1,6 @@
 import { UsersResponse } from "@/types/user";
 import { getToken } from "../token";
+import { isValidDateString } from "../date";
 
 interface FetchUsersParams {
     page?: number;
@@ -8,6 +9,8 @@ interface FetchUsersParams {
     sortOrder?: "asc" | "desc";
     search?: string;
     role?: string;
+    from?: string;
+    to?: string;
 }
 
 export async function getLoggedInUser() {
@@ -35,6 +38,13 @@ export async function fetchUsers(params?: FetchUsersParams): Promise<UsersRespon
         if (params.sortOrder) searchParams.append("sortOrder", params.sortOrder);
         if (params.search) searchParams.append("search", params.search);
         if (params.role) searchParams.append("role", params.role);
+        if (isValidDateString(params.from)) {
+            searchParams.set("from", new Date(params.from!).toISOString())
+        }
+
+        if (isValidDateString(params.to)) {
+            searchParams.set("to", new Date(params.to!).toISOString())
+        }
     }
 
     const url = `${process.env.NEXT_PUBLIC_API_URL}/users${searchParams.toString() ? `?${searchParams}` : ""}`;
