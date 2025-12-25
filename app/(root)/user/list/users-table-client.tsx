@@ -18,7 +18,12 @@ export default function UsersTableClient({ usersResponse }: { usersResponse: Use
   return (
     <TableProvider data={users} columns={userColumns}>
       <div className="flex flex-wrap gap-2">
-        <TableSearch column="username" syncToUrl paramName="search" />
+
+        <TableSearch
+          column="username"
+          syncToUrl paramName="search"
+          searchResults={usersResponse.meta.total}
+        />
 
         <TableFilter
           column="role"
