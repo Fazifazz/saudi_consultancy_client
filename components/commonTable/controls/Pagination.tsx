@@ -15,46 +15,165 @@ import {
     ChevronRight,
     ChevronsRight,
 } from "lucide-react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useEffect } from "react"
 
-const PAGE_SIZES = [5, 10, 20, 50, 100]
+const PAGE_SIZES = [1, 5, 10, 20, 50, 100]
 
-export function Pagination() {
+interface PaginationProps {
+    /** Enable URL-based pagination (SSR-safe) */
+    syncToUrl?: boolean
+
+    /** Query param names */
+    pageParam?: string
+    limitParam?: string
+
+    /** Server values */
+    currentPage?: number        // 1-based
+    totalPages?: number
+    totalItems?: number
+
+    /** replace vs push */
+    replace?: boolean
+}
+
+export function Pagination({
+    syncToUrl = false,
+    pageParam = "page",
+    limitParam = "limit",
+    currentPage,
+    totalPages = 1,
+    totalItems = 0,
+    replace = true,
+}: PaginationProps) {
     const { table } = useTable<any>()
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
 
-    const {
-        pageIndex,
-        pageSize,
-    } = table.getState().pagination
+    const pageSize = table.getState().pagination.pageSize
 
-    const totalRows = table.getFilteredRowModel().rows.length
-    const totalPages = table.getPageCount()
+    // Prefer server page → fallback to table
+    const effectivePage =
+        typeof currentPage === "number" && currentPage > 0
+            ? currentPage
+            : table.getState().pagination.pageIndex + 1
+
+    /* --------------------------------------------
+       URL PAGE CHANGE HANDLER (SSR-safe)
+    --------------------------------------------- */
+
+    useEffect(() => {
+        if (!syncToUrl) return
+
+        const limitFromUrl = Number(searchParams.get(limitParam))
+
+        if (
+            !Number.isNaN(limitFromUrl) &&
+            limitFromUrl > 0 &&
+            limitFromUrl !== pageSize
+        ) {
+            table.setPageSize(limitFromUrl)
+        }
+    }, [searchParams])
+
+    useEffect(() => {
+        if (!syncToUrl) return
+
+        const hasPage = searchParams.has(pageParam)
+        const hasLimit = searchParams.has(limitParam)
+
+        // If both exist, do nothing
+        if (hasPage && hasLimit) return
+
+        const params = new URLSearchParams(searchParams.toString())
+
+        if (!hasPage) {
+            params.set(pageParam, "1")
+        }
+
+        if (!hasLimit) {
+            params.set(limitParam, String(pageSize))
+        }
+
+        const url =
+            pathname + (params.toString() ? `?${params.toString()}` : "")
+
+        // Replace to avoid history pollution
+        router.replace(url)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
+    const goToPage = (page: number) => {
+        if (!syncToUrl) {
+            table.setPageIndex(page - 1)
+            return
+        }
+
+        const params = new URLSearchParams(searchParams.toString())
+        params.set(pageParam, String(page))
+        params.set(limitParam, String(pageSize))
+
+        const url =
+            pathname + (params.toString() ? `?${params.toString()}` : "")
+
+        replace ? router.replace(url) : router.push(url)
+    }
+
+    const startItem =
+        totalItems > 0 ? (effectivePage - 1) * pageSize + 1 : 0
+
+    const endItem =
+        totalItems > 0
+            ? Math.min(effectivePage * pageSize, totalItems)
+            : 0
+
+    const canGoPrevious = effectivePage > 1
+    const canGoNext = effectivePage < totalPages
 
     return (
         <div className="flex flex-wrap items-center justify-between gap-3 py-4">
             {/* LEFT: ITEMS COUNT */}
             <div className="text-sm text-muted-foreground">
-                Showing{" "}
-                <strong>
-                    {pageIndex * pageSize + 1}
-                </strong>{" "}
-                –{" "}
-                <strong>
-                    {Math.min((pageIndex + 1) * pageSize, totalRows)}
-                </strong>{" "}
-                of <strong>{totalRows}</strong>
+                {totalItems ? (
+                    <>
+                        Showing <strong>{startItem}</strong> –{" "}
+                        <strong>{endItem}</strong> of{" "}
+                        <strong>{totalItems}</strong>
+                    </>
+                ) : (
+                    <>Page <strong>{effectivePage}</strong></>
+                )}
             </div>
 
-            {/* RIGHT: PAGINATION CONTROLS */}
+            {/* RIGHT: CONTROLS */}
             <div className="flex items-center gap-2">
                 {/* PAGE SIZE */}
                 <Select
                     value={String(pageSize)}
-                    onValueChange={(value) =>
-                        table.setPageSize(Number(value))
-                    }
+                    onValueChange={(value) => {
+                        const newLimit = Number(value)
+
+                        // 1️ Update TanStack immediately
+                        table.setPageSize(newLimit)
+                        table.setPageIndex(0)
+
+                        // 2Update URL for SSR
+                        if (syncToUrl) {
+                            const params = new URLSearchParams(searchParams.toString())
+                            params.set(limitParam, String(newLimit))
+                            params.set(pageParam, "1")
+
+                            const url =
+                                pathname + (params.toString() ? `?${params.toString()}` : "")
+
+                            replace ? router.replace(url) : router.push(url)
+                        }
+                    }}
                 >
                     <SelectTrigger className="w-[90px]">
-                        <SelectValue placeholder="Rows" />
+                        <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                         {PAGE_SIZES.map((size) => (
@@ -69,8 +188,8 @@ export function Pagination() {
                 <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => table.setPageIndex(0)}
-                    disabled={!table.getCanPreviousPage()}
+                    onClick={() => goToPage(1)}
+                    disabled={!canGoPrevious}
                 >
                     <ChevronsLeft className="h-4 w-4" />
                 </Button>
@@ -79,16 +198,15 @@ export function Pagination() {
                 <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
+                    onClick={() => goToPage(effectivePage - 1)}
+                    disabled={!canGoPrevious}
                 >
                     <ChevronLeft className="h-4 w-4" />
                 </Button>
 
                 {/* PAGE INFO */}
                 <span className="text-sm whitespace-nowrap">
-                    Page{" "}
-                    <strong>{pageIndex + 1}</strong> of{" "}
+                    Page <strong>{effectivePage}</strong> of{" "}
                     <strong>{totalPages}</strong>
                 </span>
 
@@ -96,8 +214,8 @@ export function Pagination() {
                 <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
+                    onClick={() => goToPage(effectivePage + 1)}
+                    disabled={!canGoNext}
                 >
                     <ChevronRight className="h-4 w-4" />
                 </Button>
@@ -106,10 +224,8 @@ export function Pagination() {
                 <Button
                     variant="outline"
                     size="icon"
-                    onClick={() =>
-                        table.setPageIndex(totalPages - 1)
-                    }
-                    disabled={!table.getCanNextPage()}
+                    onClick={() => goToPage(totalPages)}
+                    disabled={!canGoNext}
                 >
                     <ChevronsRight className="h-4 w-4" />
                 </Button>

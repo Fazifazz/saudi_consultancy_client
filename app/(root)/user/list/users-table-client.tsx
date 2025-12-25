@@ -53,7 +53,6 @@ export default function UsersTableClient({
         syncToUrl
         pageParam="page"
         limitParam="limit"
-        defaultPageSize={20}
         currentPage={usersResponse.meta.page}
         totalPages={usersResponse.meta.pages}
         totalItems={usersResponse.meta.total}
