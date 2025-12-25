@@ -18,7 +18,6 @@ export default async function UsersPage({
     const searchParam = await searchParams
     const page = Number(searchParam.page ?? 1)
     const limit = Number(searchParam.limit ?? 10)
-    console.log({role: searchParam.role})
 
     const users = await fetchUsers({
         page,
