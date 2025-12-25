@@ -19,11 +19,11 @@ export function DataTable() {
   return (
     <div className="rounded-md border overflow-hidden">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-primary">
           {table.getHeaderGroups().map((hg: any) => (
             <TableRow key={hg.id}>
               {hg.headers.map((header: any) => (
-                <TableHead key={header.id}>
+                <TableHead className="text-white" key={header.id}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
