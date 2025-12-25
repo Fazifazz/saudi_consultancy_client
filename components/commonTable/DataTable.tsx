@@ -1,8 +1,6 @@
-"use client"
+'use client';
 
-import {
-  flexRender,
-} from "@tanstack/react-table"
+import { flexRender } from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -10,11 +8,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { useTable } from "./TableProvider"
+} from '@/components/ui/table';
+import { useTable } from './TableProvider';
 
 export function DataTable() {
-  const { table } = useTable<any>()
+  const { table } = useTable<any>();
 
   return (
     <div className="rounded-md border overflow-hidden">
@@ -26,10 +24,7 @@ export function DataTable() {
                 <TableHead className="text-white" key={header.id}>
                   {header.isPlaceholder
                     ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                    : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}
             </TableRow>
@@ -42,10 +37,7 @@ export function DataTable() {
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell: any) => (
                   <TableCell key={cell.id}>
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
@@ -60,5 +52,5 @@ export function DataTable() {
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }

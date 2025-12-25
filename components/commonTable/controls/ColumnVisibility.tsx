@@ -1,16 +1,16 @@
-"use client"
+'use client';
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { useTable } from "../TableProvider"
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { useTable } from '../TableProvider';
 
 export function ColumnVisibility() {
-  const { table } = useTable<any>()
+  const { table } = useTable<any>();
 
   return (
     <DropdownMenu>
@@ -18,7 +18,8 @@ export function ColumnVisibility() {
         <Button variant="outline">Columns</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {table.getAllColumns()
+        {table
+          .getAllColumns()
           .filter((col: any) => col.getCanHide())
           .map((col: any) => (
             <DropdownMenuCheckboxItem
@@ -31,5 +32,5 @@ export function ColumnVisibility() {
           ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

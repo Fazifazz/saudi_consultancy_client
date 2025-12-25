@@ -3,13 +3,13 @@ import {
   SortingState,
   ColumnFiltersState,
   VisibilityState,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table';
 
 export interface CommonTableProps<TData> {
-  data: TData[]
-  columns: ColumnDef<TData, any>[]
+  data: TData[];
+  columns: ColumnDef<TData, any>[];
 }
 
 export interface TableContextType<TData> {
-  table: any
+  table: any;
 }
