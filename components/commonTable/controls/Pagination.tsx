@@ -13,7 +13,7 @@ import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from 'lucide-r
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-const PAGE_SIZES = [1, 5, 10, 20, 50, 100];
+const PAGE_SIZES = [5, 10, 20, 50, 100];
 
 interface PaginationProps {
   /** Enable URL-based pagination (SSR-safe) */

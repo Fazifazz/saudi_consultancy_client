@@ -12,18 +12,25 @@ interface ClearFiltersProps {
   syncToUrl?: boolean;
 
   /**
+   * If true, clears page & limit also.
+   * If false (default), page & limit are preserved.
+   */
+  clearLimitAndPage?: boolean;
+
+  /**
    * Use replace instead of push (default: true)
    */
   replace?: boolean;
 
   /**
-   * Optional label (defaults to "Clear filters")
+   * Optional label
    */
   label?: string;
 }
 
 export function ClearFilters({
   syncToUrl = false,
+  clearLimitAndPage = false,
   replace = true,
   label = 'Clear filters',
 }: ClearFiltersProps) {
@@ -33,13 +40,22 @@ export function ClearFilters({
 
   if (!syncToUrl) return null;
 
-  const hasFilters = searchParams.toString().length > 0;
-
-  if (!hasFilters) return null;
+  const hasParams = searchParams.toString().length > 0;
+  if (!hasParams) return null;
 
   const handleClear = () => {
-    // Remove all search params
-    const url = pathname;
+    const params = new URLSearchParams();
+
+    if (!clearLimitAndPage) {
+      const page = searchParams.get('page');
+      const limit = searchParams.get('limit');
+
+      if (page) params.set('page', page);
+      if (limit) params.set('limit', limit);
+    }
+
+    const url = pathname + (params.toString() ? `?${params.toString()}` : '');
+
     replace ? router.replace(url) : router.push(url);
   };
 
