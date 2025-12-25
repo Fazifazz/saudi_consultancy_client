@@ -11,6 +11,7 @@ import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilt
 import { UsersResponse } from '@/types/user';
 import { userColumns } from './user-table-columns';
 import { TableFilter } from '@/components/commonTable/controls/TableFilter';
+import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
 
 export default function UsersTableClient({ usersResponse }: { usersResponse: UsersResponse }) {
   const users = usersResponse.data;
@@ -33,6 +34,10 @@ export default function UsersTableClient({ usersResponse }: { usersResponse: Use
         <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" />
 
         <ColumnVisibility />
+
+        <ClearFilters
+          syncToUrl
+        />
       </div>
 
       <DataTable />
