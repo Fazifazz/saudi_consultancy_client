@@ -94,9 +94,16 @@ export function TableFilter({
         }
     }
 
+    const param = paramName ?? column
+
+    const selectedValue = syncToUrl
+        ? searchParams.get(param) ?? ""
+        : ((columnInstance.getFilterValue() as string) ?? "")
+
+
     return (
         <Select
-            value={(columnInstance.getFilterValue() as string) ?? ""}
+            value={selectedValue}
             onValueChange={handleValueChange}
         >
             <SelectTrigger className="w-[180px]">
