@@ -1,8 +1,8 @@
-import { isValidDateString } from '../date';
+import { TicketsResponse } from '@/types/ticket';
 import { getToken } from '../token';
-import { CustomersResponse } from '@/types/customer';
+import { isValidDateString } from '../date';
 
-interface FetchCustomersParams {
+interface FetchTicketsParams {
   page?: number;
   limit?: number;
   sortBy?: string;
@@ -12,7 +12,7 @@ interface FetchCustomersParams {
   to?: string;
 }
 
-export async function fetchCustomers(params?: FetchCustomersParams): Promise<CustomersResponse> {
+export async function fetchTickets(params?: FetchTicketsParams): Promise<TicketsResponse> {
   const searchParams = new URLSearchParams();
   const token = await getToken();
 
@@ -33,7 +33,7 @@ export async function fetchCustomers(params?: FetchCustomersParams): Promise<Cus
   }
 
   const url =
-    `${process.env.NEXT_PUBLIC_API_URL}/customer` +
+    `${process.env.NEXT_PUBLIC_API_URL}/tickets` +
     (searchParams.toString() ? `?${searchParams}` : '');
 
   const response = await fetch(url, {
@@ -45,31 +45,10 @@ export async function fetchCustomers(params?: FetchCustomersParams): Promise<Cus
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch customers: ${response.statusText}`);
+    throw new Error(`Failed to fetch tickets: ${response.statusText}`);
   }
 
   const data = await response.json();
   console.log('data', data);
   return data;
 }
-
-export const fetchCustmersForSelect = async () => {
-  const token = await getToken();
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/customer/select`;
-
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store',
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch customers for select: ${response.statusText}`);
-  }
-
-  const res = await response.json();
-  console.log('response', res);
-  return res?.data || [];
-};
