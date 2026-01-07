@@ -1,6 +1,6 @@
 export interface ITicket {
   _id: string;
-  customerId: string;
+  transactionId: string;
   travelType: string;
   bookingDate: Date;
   travellingDate: Date;

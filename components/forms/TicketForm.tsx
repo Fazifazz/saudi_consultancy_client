@@ -19,9 +19,9 @@ import { paymentModeOptions } from '@/lib/constants/payments';
 
 export function TicketForm({
   className,
-  customers,
+  transactions,
   ...props
-}: React.ComponentProps<'div'> & { customers: { value: string; label: string }[] }) {
+}: React.ComponentProps<'div'> & { transactions: { value: string; label: string }[] }) {
   const router = useRouter();
   const createTicket = useCreateTicket();
 
@@ -67,7 +67,7 @@ export function TicketForm({
                     control={control}
                     name="customerId"
                     label="Ticket"
-                    options={customers || []}
+                    options={transactions || []}
                   />
                   <CommonSelect
                     control={control}
