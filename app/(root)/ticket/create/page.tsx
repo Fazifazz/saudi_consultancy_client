@@ -1,12 +1,12 @@
 import { TicketForm } from '@/components/forms/TicketForm';
-import { fetchCustmersForSelect } from '@/lib/api/customer';
+import { fetchTransactionsForSelect } from '@/lib/api/transaction';
 import React from 'react';
 
 const page = async () => {
-  const customersData: any[] = await fetchCustmersForSelect();
+  const transactionsData: any[] = await fetchTransactionsForSelect();
   return (
     <div>
-      <TicketForm customers={customersData} />
+      <TicketForm transactions={transactionsData} />
     </div>
   );
 };
