@@ -1,33 +1,23 @@
-import { UsersResponse } from '@/types/user';
+import {
+  PassportPossessionByIdResponse,
+  PassportPossessionListResponse,
+} from '@/types/passportPossessions';
 import { getToken } from '../token';
 import { isValidDateString } from '../date';
 
-interface FetchUsersParams {
+interface FetchPassportPossessionsParams {
   page?: number;
   limit?: number;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
   search?: string;
-  role?: string;
   from?: string;
   to?: string;
 }
 
-export async function getLoggedInUser() {
-  const token = await getToken();
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/loggedin-user`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store',
-  });
-
-  if (!res.ok) return null;
-  return res.json();
-}
-
-export async function fetchUsers(params?: FetchUsersParams): Promise<UsersResponse> {
+export async function fetchPassportPossessions(
+  params?: FetchPassportPossessionsParams
+): Promise<PassportPossessionListResponse> {
   const searchParams = new URLSearchParams();
   const token = await getToken();
 
@@ -37,7 +27,6 @@ export async function fetchUsers(params?: FetchUsersParams): Promise<UsersRespon
     if (params.sortBy) searchParams.append('sortBy', params.sortBy);
     if (params.sortOrder) searchParams.append('sortOrder', params.sortOrder);
     if (params.search) searchParams.append('search', params.search);
-    if (params.role) searchParams.append('role', params.role);
     if (isValidDateString(params.from)) {
       searchParams.set('from', new Date(params.from!).toISOString());
     }
@@ -47,7 +36,7 @@ export async function fetchUsers(params?: FetchUsersParams): Promise<UsersRespon
     }
   }
 
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/users${searchParams.toString() ? `?${searchParams}` : ''}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/passport-possession${searchParams.toString() ? `?${searchParams}` : ''}`;
 
   const response = await fetch(url, {
     method: 'GET',
@@ -58,7 +47,26 @@ export async function fetchUsers(params?: FetchUsersParams): Promise<UsersRespon
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch users: ${response.statusText}`);
+    throw new Error(`Failed to fetch passport possitions: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+export async function fetchPassportPossessionById(
+  id: string
+): Promise<PassportPossessionByIdResponse> {
+  const token = await getToken();
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/passport-possession/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch passport possession: ${response.statusText}`);
   }
 
   return response.json();
