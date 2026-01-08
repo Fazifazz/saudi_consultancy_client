@@ -49,7 +49,6 @@ export async function fetchCustomers(params?: FetchCustomersParams): Promise<Cus
   }
 
   const data = await response.json();
-  console.log('data', data);
   return data;
 }
 
@@ -70,6 +69,25 @@ export const fetchCustmersForSelect = async () => {
   }
 
   const res = await response.json();
-  console.log('response', res);
   return res?.data || [];
+};
+
+export const fetchCustomerById = async (id: string) => {
+  const token = await getToken();
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/customer/${id}`;
+
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch customer by ID: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data;
 };
