@@ -1,4 +1,4 @@
-export const deliveryModes = [
+export const DELIVERY_MODES = [
     { label: 'Postal Services', value: 'POSTAL SERVICES' },
     { label: 'Courier Services', value: 'COURIER SERVICES' },
     { label: 'KSRTC Logistics', value: 'KSRTC LOGISTICS' },

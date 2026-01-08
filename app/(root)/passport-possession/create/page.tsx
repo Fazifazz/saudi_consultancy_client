@@ -1,9 +1,12 @@
 import { PassportPossessionForm } from '@/components/forms/PassportPossessionForm'
+import { fetchCustmersForSelect } from '@/lib/api/customer'
 
-function page() {
+async function page() {
+
+  const customers = await fetchCustmersForSelect()
   return (
     <>
-      <PassportPossessionForm />
+      <PassportPossessionForm customers={customers} />
     </>
   )
 }

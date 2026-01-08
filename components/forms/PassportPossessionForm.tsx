@@ -11,44 +11,33 @@ import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
-import CommonTextInput from '../core/CommonTextInput';
+import { Field, FieldGroup } from '@/components/ui/field';
 import CommonTextArea from '../core/CommonTextArea';
 import CommonSelect from '../core/CommonSelect';
-import CommonCheckBox from '../core/CommonCheckBox';
 import { Label } from '../ui/label';
 import CommonDatePicker from '../core/CommonDatePicker';
-import { deliveryModes } from '@/lib/constants/delivery_modes';
+import { DELIVERY_MODES } from '@/lib/constants/delivery_modes';
 import { Separator } from '../ui/separator';
-import { List } from 'lucide-react';
 import Link from 'next/link';
+import { CommonListForSelect } from '@/types/common';
+import { STAMPING_STATUS, WORK_AGREEMENT_STATUS, WORK_AGREEMENT_STATUS_ENUM } from '@/lib/constants/status';
+import { PassportPossessionSchema, passportPossessionSchema } from '@/lib/validations/passport-possession';
+import { useCreatePassportPossession } from '@/lib/mutations/passport-possession.mutations';
+import { successToast } from '../toast/SuccessToast';
+import { destructiveToast } from '../toast/DestructiveToast';
+import { AxiosError } from 'axios';
+import { AGENCIES } from '@/lib/constants/agency';
 
-const formSchema = z.object({
-    transactionId: z
-        .string({ error: 'Customer is required' }).min(1, "Customer is required"),
-    agency: z
-        .string({ error: 'Agency is required' }).min(1, "Agency is required"),
-    agencyDeliveryMethod: z
-        .string({ error: 'Agency Delivery Mode is required' }).min(1, "Agency is required"),
-    agencyDeliveryDate: z.date({ error: 'Agency Delivery Date is required' }),
-    workAgreementStatus: z.string().nullable().optional(),
-    workAgreementStatusDate: z.date().nullable().optional(),
-    stampingStatus: z.string().nullable().optional(),
-    stampingDate: z.date().nullable().optional(),
-    stampingRemarks: z.string().nullable().optional(),
-    receivedInOfficeDate: z.date().nullable().optional(),
-    receivedInOfficeDeliveryMethod: z.string().nullable().optional(),
-    receivedToClientDate: z.date().nullable().optional(),
-    receivedToClientDeliveryMethod: z.string().nullable().optional(),
-});
+interface PassportPossessionFormProps {
+    customers: CommonListForSelect[];
+}
 
 const defaultValues = {
-    transactionId: '',
+    customerId: '',
     agency: '',
     agencyDeliveryMethod: '',
     agencyDeliveryDate: new Date(),
@@ -61,14 +50,20 @@ const defaultValues = {
     receivedInOfficeDeliveryMethod: '',
     receivedToClientDate: null,
     receivedToClientDeliveryMethod: '',
-} satisfies z.infer<typeof formSchema>;
+} satisfies PassportPossessionSchema;
 
-export function PassportPossessionForm() {
+export function PassportPossessionForm({ customers }: PassportPossessionFormProps) {
+
+    // submit mutation
+    const { mutate: createPassportPossession, isPending } = useCreatePassportPossession()
+
     // create form with useFormHook
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<PassportPossessionSchema>({
+        resolver: zodResolver(passportPossessionSchema),
         defaultValues,
     });
+
+    const workAgreementStatus = form.watch('workAgreementStatus');
 
     React.useEffect(() => {
         if (Object.keys(form.formState.errors).length > 0) {
@@ -76,28 +71,23 @@ export function PassportPossessionForm() {
         }
     }, [form.formState.errors]);
 
-    function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log('values: ', data);
-        // api connection here
-        toast('You submitted the following values:', {
-            description: (
-                <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-                    <code>{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-            position: 'bottom-right',
-            classNames: {
-                content: 'flex flex-col gap-2',
-            },
-            style: {
-                '--border-radius': 'calc(var(--radius)  + 4px)',
-            } as React.CSSProperties,
-        });
+    function onSubmit(data: PassportPossessionSchema) {
+        createPassportPossession(data,
+            {
+                onSuccess: () => {
+                    successToast('Passport Possession created successfully');
+                    form.reset(defaultValues);
+                },
+                onError: (error) => {
+                    const errorMessage = error instanceof AxiosError ? error?.response?.data?.message : error?.message;
+                    destructiveToast(errorMessage || 'Failed to create Passport Possession');
+                },
+            }
+        )
     }
 
-    const agencyOptions = [
-        { value: 'manjeri', label: 'Manjeri' },
-    ];
+    const DISABLE_BEFORE_DATE = new Date(Date.now() - 1000 * 60 * 60 * 24);
+    const CURRENT_WORK_AGREEMENT_STATUS_LABEL = WORK_AGREEMENT_STATUS.find((status) => status.value === workAgreementStatus)?.label
 
     return (
         <Card className="w-full">
@@ -111,10 +101,10 @@ export function PassportPossessionForm() {
                 <form id="form-rhf-demo" className='flex flex-col gap-4' onSubmit={form.handleSubmit(onSubmit)}>
                     <CommonSelect
                         control={form.control}
-                        name="transactionId"
+                        name="customerId"
                         label="Choose a Customer"
                         placeholder="Select Customer"
-                        options={agencyOptions}
+                        options={customers}
                     />
                     <FieldGroup>
                         <Label className='bg-green-200 dark:bg-green-800 p-3 rounded'>Agency</Label>
@@ -125,21 +115,21 @@ export function PassportPossessionForm() {
                                 label="Choose a Agency"
                                 placeholder="Select Agency"
                                 defaultValue={'manjeri'}
-                                options={agencyOptions}
+                                options={AGENCIES}
                             />
                             <CommonSelect
                                 control={form.control}
                                 name="agencyDeliveryMethod"
                                 label="Choose a Delivery Mode"
                                 placeholder="Select Delivery Mode"
-                                options={deliveryModes}
+                                options={DELIVERY_MODES}
                             />
                             <CommonDatePicker
                                 control={form.control}
                                 name="agencyDeliveryDate"
                                 label="Delivery Date"
                                 className="w-full"
-                                disableBefore={new Date(Date.now() - 1000 * 60 * 60 * 24)}
+                                disableBefore={DISABLE_BEFORE_DATE}
                             />
                         </div>
                     </FieldGroup>
@@ -151,15 +141,23 @@ export function PassportPossessionForm() {
                                 name="workAgreementStatus"
                                 label="Choose a Status"
                                 placeholder="Select Status"
-                                options={agencyOptions}
+                                options={WORK_AGREEMENT_STATUS}
                             />
-                            <CommonDatePicker
+                            {workAgreementStatus === WORK_AGREEMENT_STATUS_ENUM.RECIEVED_IN_RIYADH ? <CommonDatePicker
                                 control={form.control}
-                                name="workAgreementStatusDate"
-                                label="Work Agreement Date"
+                                name="workAgreementRecievedInRiyadhDate"
+                                label="Recieved In Riyadh Date"
                                 className="w-full"
-                                disableBefore={new Date(Date.now() - 1000 * 60 * 60 * 24)}
-                            />
+                                disableBefore={DISABLE_BEFORE_DATE}
+                            /> : workAgreementStatus !== WORK_AGREEMENT_STATUS_ENUM.PENDING ? (
+                                <CommonDatePicker
+                                    control={form.control}
+                                    name="workAgreementStatusDate"
+                                    label={`Work Agreement ${CURRENT_WORK_AGREEMENT_STATUS_LABEL} Date`}
+                                    className="w-full"
+                                    disableBefore={DISABLE_BEFORE_DATE}
+                                />
+                            ) : null}
                         </div>
                     </FieldGroup>
                     <FieldGroup>
@@ -170,7 +168,7 @@ export function PassportPossessionForm() {
                                 name="stampingStatus"
                                 label="Choose a Status"
                                 placeholder="Select Status"
-                                options={agencyOptions}
+                                options={STAMPING_STATUS}
                             />
                             <CommonTextArea
                                 control={form.control}
@@ -183,7 +181,7 @@ export function PassportPossessionForm() {
                                 name="stampingDate"
                                 label="Stamping Date"
                                 className="w-full"
-                                disableBefore={new Date(Date.now() - 1000 * 60 * 60 * 24)}
+                                disableBefore={DISABLE_BEFORE_DATE}
                             />
                         </div>
                     </FieldGroup>
@@ -195,14 +193,14 @@ export function PassportPossessionForm() {
                                 name="receivedInOfficeDeliveryMethod"
                                 label="Choose a Delivery Mode"
                                 placeholder="Delivery Mode"
-                                options={deliveryModes}
+                                options={DELIVERY_MODES}
                             />
                             <CommonDatePicker
                                 control={form.control}
                                 name="receivedInOfficeDate"
                                 label="Recieved In Office Date"
                                 className="w-full"
-                                disableBefore={new Date(Date.now() - 1000 * 60 * 60 * 24)}
+                                disableBefore={DISABLE_BEFORE_DATE}
                             />
                         </div>
                     </FieldGroup>
@@ -214,14 +212,14 @@ export function PassportPossessionForm() {
                                 name="receivedToClientDeliveryMethod"
                                 label="Choose a Delivery Mode"
                                 placeholder="Delivery Mode"
-                                options={deliveryModes}
+                                options={DELIVERY_MODES}
                             />
                             <CommonDatePicker
                                 control={form.control}
                                 name="receivedToClientDate"
                                 label="Recieved To Client Date"
                                 className="w-full"
-                                disableBefore={new Date(Date.now() - 1000 * 60 * 60 * 24)}
+                                disableBefore={DISABLE_BEFORE_DATE}
                             />
                         </div>
                     </FieldGroup>
@@ -229,11 +227,11 @@ export function PassportPossessionForm() {
             </CardContent>
             <CardFooter>
                 <Field orientation="horizontal">
-                    <Button type="button" variant="destructive" onClick={() => form.reset()}>
+                    <Button type="button" variant="destructive" disabled={isPending} onClick={() => form.reset()}>
                         Reset
                     </Button>
-                    <Button type="submit" form="form-rhf-demo">
-                        Submit
+                    <Button disabled={isPending} type="submit" form="form-rhf-demo">
+                        {isPending ? 'Submitting...' : 'Submit'}
                     </Button>
                 </Field>
             </CardFooter>
