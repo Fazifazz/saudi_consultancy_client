@@ -12,7 +12,11 @@ import { PassportPossessionListResponse } from '@/types/passportPossessions';
 import { passportPossessionColumns } from './passport-possession-table-columns';
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
 
-export default function PassportPossessionsTableClient({ passportPossessionsResponse }: { passportPossessionsResponse: PassportPossessionListResponse }) {
+export default function PassportPossessionsTableClient({
+  passportPossessionsResponse,
+}: {
+  passportPossessionsResponse: PassportPossessionListResponse;
+}) {
   const passportPossessions = passportPossessionsResponse.data || [];
   return (
     <TableProvider data={passportPossessions} columns={passportPossessionColumns}>

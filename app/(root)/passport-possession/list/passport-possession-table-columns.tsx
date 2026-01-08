@@ -78,7 +78,7 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const passportPossession = row.original;
-      const router = useRouter()
+      const router = useRouter();
       const { mutate: deletePassportPossession } = useDeletePassportPossession();
 
       const handleDelete = () => {
@@ -88,7 +88,10 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
             router.refresh();
           },
           onError: (error) => {
-            const errorMessage = error instanceof AxiosError ? error.response?.data.message : 'Failed to delete Passport Possession';
+            const errorMessage =
+              error instanceof AxiosError
+                ? error.response?.data.message
+                : 'Failed to delete Passport Possession';
             destructiveToast(errorMessage);
           },
         });
@@ -108,7 +111,9 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
 
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive" onClick={handleDelete}>Delete</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive" onClick={handleDelete}>
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

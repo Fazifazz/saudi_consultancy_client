@@ -1,6 +1,5 @@
-import { fetchPassportPossessions } from "@/lib/api/passport-possession";
-import PassportPossessionsTableClient from "./passport-possession-table-client";
-
+import { fetchPassportPossessions } from '@/lib/api/passport-possession';
+import PassportPossessionsTableClient from './passport-possession-table-client';
 
 interface PageProps {
   searchParams: {

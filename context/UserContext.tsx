@@ -7,13 +7,7 @@ import { IUser } from '@/types/user';
 
 const UserContext = createContext<IUser | null>(null);
 
-export const UserProvider = ({
-  user,
-  children,
-}: {
-  user: IUser | null;
-  children: ReactNode;
-}) => {
+export const UserProvider = ({ user, children }: { user: IUser | null; children: ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -28,11 +22,7 @@ export const UserProvider = ({
     return <p>Redirecting to login...</p>;
   }
 
-  return (
-    <UserContext.Provider value={user}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 };
 
 export const useUser = () => {

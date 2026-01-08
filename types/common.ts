@@ -1,4 +1,4 @@
 export interface CommonListForSelect {
-    value: string;
-    label: string;
+  value: string;
+  label: string;
 }
