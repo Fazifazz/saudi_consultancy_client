@@ -3,15 +3,15 @@ export interface IPassportPossession {
     transactionId: string;
     agency: string;
     agencyDeliveryMethod: string;
-    agencyDeliveryDate: Date;
+    agencyDeliveryDate: Date | null;
     workAgreementStatus?: string;
-    workAgreementDate?: Date;
+    workAgreementDate?: Date | null;
     stampingStatus?: string;
-    stampingDate?: Date;
+    stampingDate?: Date | null;
     stampingRemarks?: string;
-    receivedInOfficeDate?: Date;
+    receivedInOfficeDate?: Date | null;
     receivedInOfficeDeliveryMethod?: string;
-    receivedToClientDate?: Date;
+    receivedToClientDate?: Date | null;
     receivedToClientDeliveryMethod?: string;
     remarks?: string;
 }

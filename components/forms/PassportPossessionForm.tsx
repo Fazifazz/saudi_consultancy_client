@@ -35,8 +35,8 @@ import { IPassportPossession, PassportPossessionByIdResponse } from '@/types/pas
 import { useRouter } from 'next/navigation';
 
 interface PassportPossessionFormProps {
-    id?: string;
-    data?: Partial<IPassportPossession>;
+    id?: string | null;
+    data?: Partial<IPassportPossession> | null;
     customers: CommonListForSelect[];
 }
 
@@ -46,13 +46,14 @@ const defaultValues = {
     agencyDeliveryMethod: '',
     agencyDeliveryDate: new Date(),
     workAgreementStatus: '',
-    workAgreementStatusDate: null,
+    workAgreementRecievedInRiyadhDate: undefined,
+    workAgreementStatusDate: undefined,
     stampingStatus: '',
-    stampingDate: null,
+    stampingDate: undefined,
     stampingRemarks: '',
-    receivedInOfficeDate: null,
+    receivedInOfficeDate: undefined,
     receivedInOfficeDeliveryMethod: '',
-    receivedToClientDate: null,
+    receivedToClientDate: undefined,
     receivedToClientDeliveryMethod: '',
 } satisfies PassportPossessionSchema;
 
@@ -66,8 +67,8 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
 
     // create form with useFormHook
     const form = useForm<PassportPossessionSchema>({
-        resolver: zodResolver(passportPossessionSchema),
-        defaultValues: data ? data : defaultValues,
+        resolver: zodResolver(passportPossessionSchema) as any,
+        defaultValues: (data ? data : defaultValues) as any,
     });
 
     const workAgreementStatus = form.watch('workAgreementStatus');
