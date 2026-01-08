@@ -8,11 +8,11 @@ import {
   ColumnVisibility,
 } from '@/components/commonTable';
 import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
-import { PassportPossessionResponse } from '@/types/passportPossessions';
+import { PassportPossessionListResponse } from '@/types/passportPossessions';
 import { passportPossessionColumns } from './passport-possession-table-columns';
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
 
-export default function PassportPossessionsTableClient({ passportPossessionsResponse }: { passportPossessionsResponse: PassportPossessionResponse }) {
+export default function PassportPossessionsTableClient({ passportPossessionsResponse }: { passportPossessionsResponse: PassportPossessionListResponse }) {
   const passportPossessions = passportPossessionsResponse.data || [];
   return (
     <TableProvider data={passportPossessions} columns={passportPossessionColumns}>

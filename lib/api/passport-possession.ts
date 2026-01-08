@@ -1,4 +1,4 @@
-import { PassportPossessionResponse } from '@/types/passportPossessions';
+import { PassportPossessionByIdResponse, PassportPossessionListResponse } from '@/types/passportPossessions';
 import { getToken } from '../token';
 import { isValidDateString } from '../date';
 
@@ -12,7 +12,7 @@ interface FetchPassportPossessionsParams {
     to?: string;
 }
 
-export async function fetchPassportPossessions(params?: FetchPassportPossessionsParams): Promise<PassportPossessionResponse> {
+export async function fetchPassportPossessions(params?: FetchPassportPossessionsParams): Promise<PassportPossessionListResponse> {
     const searchParams = new URLSearchParams();
     const token = await getToken();
 
@@ -43,6 +43,23 @@ export async function fetchPassportPossessions(params?: FetchPassportPossessions
 
     if (!response.ok) {
         throw new Error(`Failed to fetch passport possitions: ${response.statusText}`);
+    }
+
+    return response.json();
+}
+
+export async function fetchPassportPossessionById(id: string): Promise<PassportPossessionByIdResponse> {
+    const token = await getToken();
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/passport-possession/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch passport possession: ${response.statusText}`);
     }
 
     return response.json();

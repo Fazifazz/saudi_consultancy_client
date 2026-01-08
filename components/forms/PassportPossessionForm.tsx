@@ -31,8 +31,11 @@ import { successToast } from '../toast/SuccessToast';
 import { destructiveToast } from '../toast/DestructiveToast';
 import { AxiosError } from 'axios';
 import { AGENCIES } from '@/lib/constants/agency';
+import { IPassportPossession, PassportPossessionByIdResponse } from '@/types/passportPossessions';
 
 interface PassportPossessionFormProps {
+    id?: string;
+    data?: Partial<IPassportPossession>;
     customers: CommonListForSelect[];
 }
 
@@ -52,24 +55,17 @@ const defaultValues = {
     receivedToClientDeliveryMethod: '',
 } satisfies PassportPossessionSchema;
 
-export function PassportPossessionForm({ customers }: PassportPossessionFormProps) {
-
+export function PassportPossessionForm({ customers, data }: PassportPossessionFormProps) {
     // submit mutation
     const { mutate: createPassportPossession, isPending } = useCreatePassportPossession()
 
     // create form with useFormHook
     const form = useForm<PassportPossessionSchema>({
         resolver: zodResolver(passportPossessionSchema),
-        defaultValues,
+        defaultValues: data ? data : defaultValues,
     });
 
     const workAgreementStatus = form.watch('workAgreementStatus');
-
-    React.useEffect(() => {
-        if (Object.keys(form.formState.errors).length > 0) {
-            console.log('RHF Errors:', form.formState.errors);
-        }
-    }, [form.formState.errors]);
 
     function onSubmit(data: PassportPossessionSchema) {
         createPassportPossession(data,

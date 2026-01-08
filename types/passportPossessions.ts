@@ -16,7 +16,7 @@ export interface IPassportPossession {
     remarks?: string;
 }
 
-export interface PassportPossessionResponse {
+export interface PassportPossessionListResponse {
     data: IPassportPossession[];
     meta: {
         total: number;
@@ -25,3 +25,9 @@ export interface PassportPossessionResponse {
         limit: number;
     };
 }
+
+export interface PassportPossessionByIdResponse {
+    data: IPassportPossession;
+    message: string;
+}
+

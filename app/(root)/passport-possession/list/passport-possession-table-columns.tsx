@@ -94,6 +94,10 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
         });
       };
 
+      const handleEdit = () => {
+        router.push(`/passport-possession/edit/${passportPossession._id}`);
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -103,7 +107,7 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
             <DropdownMenuItem className="text-destructive" onClick={handleDelete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
