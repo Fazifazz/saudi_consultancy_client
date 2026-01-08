@@ -1,4 +1,11 @@
-import { IdCard, LucideIcon, Users, TicketsPlane, ArrowLeftRight, IdCardLanyard } from 'lucide-react';
+import {
+  IdCard,
+  LucideIcon,
+  Users,
+  TicketsPlane,
+  ArrowLeftRight,
+  IdCardLanyard,
+} from 'lucide-react';
 
 export type SidebarMenuItem = {
   title: string;
