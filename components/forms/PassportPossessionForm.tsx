@@ -26,7 +26,7 @@ import Link from 'next/link';
 import { CommonListForSelect } from '@/types/common';
 import { STAMPING_STATUS, WORK_AGREEMENT_STATUS, WORK_AGREEMENT_STATUS_ENUM } from '@/lib/constants/status';
 import { PassportPossessionSchema, passportPossessionSchema } from '@/lib/validations/passport-possession';
-import { useCreatePassportPossession } from '@/lib/mutations/passport-possession.mutations';
+import { useCreatePassportPossession } from '@/lib/queries/passport-possession.mutations';
 import { successToast } from '../toast/SuccessToast';
 import { destructiveToast } from '../toast/DestructiveToast';
 import { AxiosError } from 'axios';

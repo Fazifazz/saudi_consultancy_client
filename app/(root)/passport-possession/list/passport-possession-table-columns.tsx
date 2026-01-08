@@ -11,6 +11,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { IPassportPossession } from '@/types/passportPossessions';
+import { useDeletePassportPossession } from '@/lib/queries/passport-possession.mutations';
+import { successToast } from '@/components/toast/SuccessToast';
+import { destructiveToast } from '@/components/toast/DestructiveToast';
+import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 
 export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
@@ -73,6 +78,22 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const passportPossession = row.original;
+      const router = useRouter()
+      const { mutate: deletePassportPossession } = useDeletePassportPossession();
+
+      const handleDelete = () => {
+        deletePassportPossession(passportPossession._id, {
+          onSuccess: () => {
+            successToast('Passport Possession deleted successfully');
+            router.refresh();
+          },
+          onError: (error) => {
+            const errorMessage = error instanceof AxiosError ? error.response?.data.message : 'Failed to delete Passport Possession';
+            destructiveToast(errorMessage);
+          },
+        });
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -83,7 +104,7 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
 
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+            <DropdownMenuItem className="text-destructive" onClick={handleDelete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
