@@ -27,7 +27,7 @@ export default async function PassportPossessionsPage({ searchParams }: PageProp
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Passport Possitions</h1>
+      <h1 className="text-xl font-semibold">Passport Possessions</h1>
 
       <PassportPossessionsTableClient passportPossessionsResponse={passportPossessions} />
     </div>
