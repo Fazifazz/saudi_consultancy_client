@@ -14,6 +14,17 @@ export function useCreatePassportPossession() {
     });
 }
 
+export function useUpdatePassportPossession() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: updatePassportPossession,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['passport-possession'] });
+        },
+    });
+}
+
 export function useDeletePassportPossession() {
     const queryClient = useQueryClient();
 
@@ -27,8 +38,14 @@ export function useDeletePassportPossession() {
 
 // api calls
 const createPassportPossession = async (data: PassportPossessionSchema) => {
-  const res = await axios.post('/api/passport-possession', data);
-  return res.data;
+    const res = await axios.post('/api/passport-possession', data);
+    return res.data;
+};
+
+const updatePassportPossession = async (data: Partial<PassportPossessionSchema> & { _id: string }) => {
+    const { _id: id } = data;
+    const res = await axios.put(`/api/passport-possession/${id}`, data);
+    return res.data;
 };
 
 const deletePassportPossession = async (id: string) => {

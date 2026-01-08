@@ -26,12 +26,13 @@ import Link from 'next/link';
 import { CommonListForSelect } from '@/types/common';
 import { STAMPING_STATUS, WORK_AGREEMENT_STATUS, WORK_AGREEMENT_STATUS_ENUM } from '@/lib/constants/status';
 import { PassportPossessionSchema, passportPossessionSchema } from '@/lib/validations/passport-possession';
-import { useCreatePassportPossession } from '@/lib/queries/passport-possession.mutations';
+import { useCreatePassportPossession, useUpdatePassportPossession } from '@/lib/queries/passport-possession.mutations';
 import { successToast } from '../toast/SuccessToast';
 import { destructiveToast } from '../toast/DestructiveToast';
 import { AxiosError } from 'axios';
 import { AGENCIES } from '@/lib/constants/agency';
 import { IPassportPossession, PassportPossessionByIdResponse } from '@/types/passportPossessions';
+import { useRouter } from 'next/navigation';
 
 interface PassportPossessionFormProps {
     id?: string;
@@ -55,9 +56,13 @@ const defaultValues = {
     receivedToClientDeliveryMethod: '',
 } satisfies PassportPossessionSchema;
 
-export function PassportPossessionForm({ customers, data }: PassportPossessionFormProps) {
+export function PassportPossessionForm({ customers, id, data }: PassportPossessionFormProps) {
+    const router = useRouter()
     // submit mutation
-    const { mutate: createPassportPossession, isPending } = useCreatePassportPossession()
+    const { mutate: createPassportPossession, isPending: createPending } = useCreatePassportPossession()
+    const { mutate: updatePassportPossession, isPending: updatePending } = useUpdatePassportPossession()
+
+    const isPending = createPending || updatePending;
 
     // create form with useFormHook
     const form = useForm<PassportPossessionSchema>({
@@ -68,18 +73,35 @@ export function PassportPossessionForm({ customers, data }: PassportPossessionFo
     const workAgreementStatus = form.watch('workAgreementStatus');
 
     function onSubmit(data: PassportPossessionSchema) {
-        createPassportPossession(data,
-            {
-                onSuccess: () => {
-                    successToast('Passport Possession created successfully');
-                    form.reset(defaultValues);
-                },
-                onError: (error) => {
-                    const errorMessage = error instanceof AxiosError ? error?.response?.data?.message : error?.message;
-                    destructiveToast(errorMessage || 'Failed to create Passport Possession');
-                },
-            }
-        )
+        if (!id) {
+            createPassportPossession(data,
+                {
+                    onSuccess: () => {
+                        successToast('Passport Possession created successfully');
+                        form.reset(defaultValues);
+                    },
+                    onError: (error) => {
+                        const errorMessage = error instanceof AxiosError ? error?.response?.data?.message : error?.message;
+                        destructiveToast(errorMessage || 'Failed to create Passport Possession');
+                    },
+                }
+            )
+        } else {
+            const updatePayload = { ...data, _id: id }
+            updatePassportPossession(updatePayload,
+                {
+                    onSuccess: () => {
+                        successToast('Passport Possession updated successfully');
+                        form.reset(defaultValues);
+                        router.push('/passport-possession/list')
+                    },
+                    onError: (error) => {
+                        const errorMessage = error instanceof AxiosError ? error?.response?.data?.message : error?.message;
+                        destructiveToast(errorMessage || 'Failed to update Passport Possession');
+                    },
+                }
+            )
+        }
     }
 
     const DISABLE_BEFORE_DATE = new Date(Date.now() - 1000 * 60 * 60 * 24);
