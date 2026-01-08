@@ -20,7 +20,7 @@ export default function CustomersTableClient({
 }) {
   const customers = customersResponse.data;
   return (
-    <TableProvider data={customers} columns={customerColumns}>
+    <TableProvider data={customers} columns={customerColumns()}>
       <div className="flex flex-wrap gap-2">
         <TableSearch
           column="name"

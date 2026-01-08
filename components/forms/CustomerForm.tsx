@@ -9,50 +9,69 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { customerSchema, type CustomerSchema } from '@/lib/validations/customer';
 import CommonTextInput from '../core/CommonTextInput';
-import { useCreateCustomer } from '@/lib/queries/customer.mutation';
+import { useCreateCustomer, useUpdateCustomer } from '@/lib/queries/customer.mutation';
 import { destructiveToast } from '../toast/DestructiveToast';
 import { successToast } from '../toast/SuccessToast';
 import { indianStatesOptions, keralaDistrictsOptions } from '@/lib/constants/locations';
 import CommonSelect from '../core/CommonSelect';
 
-export function CustomerForm({ className, ...props }: React.ComponentProps<'div'>) {
+type CustomerFormProps = {
+  className?: string;
+  id?: string;
+  customer?: any;
+};
+
+export function CustomerForm({ className, id, customer, ...props }: CustomerFormProps) {
   const router = useRouter();
   const createCustomer = useCreateCustomer();
+  const updateCustomer = useUpdateCustomer();
+
+  const isEdit = id !== undefined;
 
   const { control, handleSubmit } = useForm<CustomerSchema>({
     resolver: zodResolver(customerSchema),
     defaultValues: {
-      name: '',
-      passportNumber: '',
-      address: '',
-      postOffice: '',
-      state: 'Kerala',
-      district: 'Malappuram',
-      contactNumber1: '',
-      contactNumber2: '',
+      name: customer?.name || '',
+      passportNumber: customer?.passportNumber || '',
+      address: customer?.address || '',
+      postOffice: customer?.postOffice || '',
+      state: customer?.state || 'Kerala',
+      district: customer?.district || 'Malappuram',
+      contactNumber1: customer?.contactNumber1 || '',
+      contactNumber2: customer?.contactNumber2 || undefined,
     },
   });
 
   const onSubmit = (values: CustomerSchema) => {
-    // const newValues = refineInputValues();
     console.log('values submitting', values);
-    createCustomer.mutate(values, {
-      onSuccess: () => {
-        successToast('Customer created successfully');
-        router.push('/customer/list');
-      },
-      onError: (error: any) => {
-        destructiveToast(error?.response?.data?.message || 'Something went wrong');
-      },
-    });
+    if (isEdit) {
+      updateCustomer.mutate(
+        { id, ...values },
+        {
+          onSuccess: () => {
+            successToast('Customer updated successfully');
+            router.push('/customer/list');
+          },
+        }
+      );
+    } else {
+      createCustomer.mutate(values, {
+        onSuccess: () => {
+          successToast('Customer created successfully');
+          router.push('/customer/list');
+        },
+        onError: (error: any) => {
+          destructiveToast(error?.response?.data?.message || 'Something went wrong');
+        },
+      });
+    }
   };
 
-  // const refineInputValues = (values: CustomerSchema) => {};
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader className="text-start">
-          <CardTitle className="text-xl">Create Customer</CardTitle>
+          <CardTitle className="text-xl">{isEdit ? 'Edit Customer' : 'Create Customer'}</CardTitle>
         </CardHeader>
 
         <CardContent>
@@ -102,8 +121,14 @@ export function CustomerForm({ className, ...props }: React.ComponentProps<'div'
                 >
                   {createCustomer.isPending ? 'Reseting...' : 'Reset'}
                 </Button>
-                <Button className="w-39" type="submit" disabled={createCustomer.isPending}>
-                  {createCustomer.isPending ? 'Saving...' : 'Create Customer'}
+                <Button
+                  className="w-39"
+                  type="submit"
+                  disabled={createCustomer.isPending || updateCustomer.isPending}
+                >
+                  {createCustomer.isPending || updateCustomer.isPending
+                    ? 'Saving...'
+                    : `${isEdit ? 'Update Customer' : 'Create Customer'}`}
                 </Button>
               </div>
             </FieldGroup>
