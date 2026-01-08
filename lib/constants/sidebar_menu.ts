@@ -1,4 +1,4 @@
-import { IdCard, LucideIcon, Users, TicketsPlane, ArrowLeftRight } from 'lucide-react';
+import { IdCard, LucideIcon, Users, TicketsPlane, ArrowLeftRight, IdCardLanyard } from 'lucide-react';
 
 export type SidebarMenuItem = {
   title: string;
@@ -48,5 +48,16 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
       { title: 'Create', url: '/ticket/create' },
       { title: 'List', url: '/ticket/list' },
     ],
+  },
+  {
+    title: 'Passport Possition',
+    url: '/passport-possession',
+    icon: IdCardLanyard,
+    items: [
+      { title: 'Create', url: '/passport-possession/create' },
+      { title: 'List', url: '/passport-possession/list' },
+    ],
+    // TODO: undo comment if color needed for sidebar menu
+    // className:'bg-cyan-500 dark:bg-cyan-700 text-white'
   },
 ];

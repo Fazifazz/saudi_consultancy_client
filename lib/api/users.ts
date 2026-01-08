@@ -56,7 +56,6 @@ export async function fetchUsers(params?: FetchUsersParams): Promise<UsersRespon
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log('response', response);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch users: ${response.statusText}`);

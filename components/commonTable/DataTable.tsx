@@ -19,7 +19,7 @@ export function DataTable() {
       <Table>
         <TableHeader className="bg-primary">
           {table.getHeaderGroups().map((hg: any) => (
-            <TableRow key={hg.id}>
+            <TableRow key={hg.id} className='*:border-border [&>:not(:last-child)]:border-r'>
               {hg.headers.map((header: any) => (
                 <TableHead className="text-white" key={header.id}>
                   {header.isPlaceholder
@@ -34,7 +34,7 @@ export function DataTable() {
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row: any) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.id} className='*:border-border [&>:not(:last-child)]:border-r'>
                 {row.getVisibleCells().map((cell: any) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
