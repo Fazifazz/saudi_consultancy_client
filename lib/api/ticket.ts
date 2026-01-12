@@ -33,7 +33,7 @@ export async function fetchTickets(params?: FetchTicketsParams): Promise<Tickets
   }
 
   const url =
-    `${process.env.NEXT_PUBLIC_API_URL}/tickets` +
+    `${process.env.NEXT_PUBLIC_API_URL}/ticket` +
     (searchParams.toString() ? `?${searchParams}` : '');
 
   const response = await fetch(url, {
@@ -51,4 +51,23 @@ export async function fetchTickets(params?: FetchTicketsParams): Promise<Tickets
   const data = await response.json();
   console.log('data', data);
   return data;
+}
+
+export async function fetchOneTicket(ticketId: string) {
+  const token = await getToken();
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ticket/${ticketId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ticket: ${response.statusText}`);
+  }
+
+  const res = await response.json();
+  return res?.data;
 }

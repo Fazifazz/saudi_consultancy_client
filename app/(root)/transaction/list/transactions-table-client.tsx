@@ -28,7 +28,12 @@ export default function TransactionsTableClient({
           searchResults={transactionsResponse.meta.total}
         />
 
-        <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" />
+        <TableDateFilter
+          column="formattedCreatedAt"
+          mode="range"
+          syncToUrl
+          paramName="range_createdAt"
+        />
 
         <ColumnVisibility />
 
