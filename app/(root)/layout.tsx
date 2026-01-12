@@ -12,7 +12,7 @@ export default async function AuthLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getLoggedInUser();
+  const user = await getLoggedInUser().then((res) => res.user);
   return (
     <QueryProvider>
       <UserProvider user={user}>
