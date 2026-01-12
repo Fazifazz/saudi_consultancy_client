@@ -13,49 +13,79 @@ import { destructiveToast } from '../toast/DestructiveToast';
 import { successToast } from '../toast/SuccessToast';
 import CommonSelect from '../core/CommonSelect';
 import CommonDatePicker from '../core/CommonDatePicker';
-import { useCreateTicket } from '@/lib/queries/ticket.mutation';
+import { useCreateTicket, useUpdateTicket } from '@/lib/queries/ticket.mutation';
 import { travelTypeOptions } from '@/lib/constants/travel';
 import { paymentModeOptions } from '@/lib/constants/payments';
+import { ITicket } from '@/types/ticket';
 
 export function TicketForm({
   className,
   transactions,
+  ticketDetails,
   ...props
-}: React.ComponentProps<'div'> & { transactions: { value: string; label: string }[] }) {
+}: React.ComponentProps<'div'> & {
+  transactions?: { value: string; label: string }[];
+  ticketDetails?: ITicket;
+}) {
   const router = useRouter();
   const createTicket = useCreateTicket();
+  const updateTicket = useUpdateTicket();
+
+  const isEditing = !!ticketDetails;
 
   const { control, handleSubmit } = useForm<TicketSchema>({
     resolver: zodResolver(ticketSchema),
-    defaultValues: {
-      travelType: '',
-      bookingDate: new Date(),
-      travellingDate: new Date(),
-      airlineCompany: '',
-      paymentMode: '',
-    },
+    defaultValues: ticketDetails
+      ? {
+          transactionId: ticketDetails.transactionId,
+          travelType: ticketDetails.travelType,
+          bookingDate: new Date(ticketDetails.bookingDate),
+          travellingDate: new Date(ticketDetails.travellingDate),
+          airlineCompany: ticketDetails.airlineCompany,
+          paymentMode: ticketDetails.paymentMode,
+        }
+      : {
+          transactionId: '',
+          travelType: '',
+          bookingDate: new Date(),
+          travellingDate: new Date(),
+          airlineCompany: '',
+          paymentMode: '',
+        },
   });
 
   const onSubmit = (values: TicketSchema) => {
-    // const newValues = refineInputValues();
-    console.log('values submitting', values);
-    createTicket.mutate(values, {
-      onSuccess: () => {
-        successToast('Ticket created successfully');
-        router.push('/ticket/list');
-      },
-      onError: (error: any) => {
-        destructiveToast(error?.response?.data?.message || 'Something went wrong');
-      },
-    });
+    if (isEditing) {
+      updateTicket.mutate(
+        { id: ticketDetails._id, data: values },
+        {
+          onSuccess: () => {
+            successToast('Ticket updated successfully');
+            router.push('/ticket/list');
+          },
+          onError: (error: any) => {
+            destructiveToast(error?.response?.data?.message || 'Something went wrong');
+          },
+        }
+      );
+    } else {
+      createTicket.mutate(values, {
+        onSuccess: () => {
+          successToast('Ticket created successfully');
+          router.push('/ticket/list');
+        },
+        onError: (error: any) => {
+          destructiveToast(error?.response?.data?.message || 'Something went wrong');
+        },
+      });
+    }
   };
 
-  // const refineInputValues = (values: TicketSchema) => {};
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader className="text-start">
-          <CardTitle className="text-xl">Create Ticket</CardTitle>
+          <CardTitle className="text-xl">{isEditing ? 'Edit Ticket' : 'Create Ticket'}</CardTitle>
         </CardHeader>
 
         <CardContent>
@@ -65,8 +95,8 @@ export function TicketForm({
                 <div className="space-y-4">
                   <CommonSelect
                     control={control}
-                    name="customerId"
-                    label="Ticket"
+                    name="transactionId"
+                    label="Transaction"
                     options={transactions || []}
                   />
                   <CommonSelect
@@ -99,11 +129,23 @@ export function TicketForm({
                 </div>
               </div>
               <div className="flex flex-between gap-2">
-                <Button className="w-39 bg-red-400" type="reset" disabled={createTicket.isPending}>
-                  {createTicket.isPending ? 'Reseting...' : 'Reset'}
+                <Button
+                  className="w-39 bg-red-400"
+                  type="reset"
+                  disabled={createTicket.isPending || updateTicket.isPending}
+                >
+                  {createTicket.isPending || updateTicket.isPending ? 'Reseting...' : 'Reset'}
                 </Button>
-                <Button className="w-39" type="submit" disabled={createTicket.isPending}>
-                  {createTicket.isPending ? 'Saving...' : 'Create Ticket'}
+                <Button
+                  className="w-39"
+                  type="submit"
+                  disabled={createTicket.isPending || updateTicket.isPending}
+                >
+                  {createTicket.isPending || updateTicket.isPending
+                    ? 'Saving...'
+                    : isEditing
+                      ? 'Update Ticket'
+                      : 'Create Ticket'}
                 </Button>
               </div>
             </FieldGroup>

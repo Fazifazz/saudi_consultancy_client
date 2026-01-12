@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { ITransaction } from '@/types/transaction';
+import { useRouter } from 'next/navigation';
 import { useDeleteTransaction } from '@/lib/queries/transaction.mutation';
 import { successToast } from '@/components/toast/SuccessToast';
 import { toast } from 'sonner';
@@ -45,62 +46,65 @@ export const transactionColumns: ColumnDef<ITransaction>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
-      const transaction = row.original;
-      const [isDialogOpen, setIsDialogOpen] = useState(false);
-      const deleteMutation = useDeleteTransaction();
-
-      const handleDelete = async () => {
-        try {
-          await deleteMutation.mutateAsync(transaction._id);
-          successToast('Transaction deleted successfully');
-          setIsDialogOpen(false);
-        } catch (error) {
-          toast.error('Failed to delete transaction');
-        }
-      };
-
-      return (
-        <>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(transaction._id)}>
-                Copy Transaction ID
-              </DropdownMenuItem>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the transaction.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleDelete}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                >
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </>
-      );
-    },
+    cell: ({ row }) => <TransactionActionsCell transaction={row.original} />,
   },
 ];
+
+function TransactionActionsCell({ transaction }: { transaction: ITransaction }) {
+  const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const deleteMutation = useDeleteTransaction();
+
+  const handleDelete = async () => {
+    try {
+      await deleteMutation.mutateAsync(transaction._id);
+      router.push('/transaction/list');
+      successToast('Transaction deleted successfully');
+      setIsDialogOpen(false);
+    } catch (error) {
+      toast.error('Failed to delete transaction');
+    }
+  };
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => navigator.clipboard.writeText(transaction._id)}>
+            Copy Transaction ID
+          </DropdownMenuItem>
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the transaction.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
+}
