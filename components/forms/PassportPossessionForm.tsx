@@ -117,7 +117,7 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          Passport Possition
+          Passport Possession
           <Button variant={'outline'}>
             <Link href={'/passport-possession/list'}>List</Link>
           </Button>
