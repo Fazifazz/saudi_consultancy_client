@@ -1,21 +1,17 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
 import { IPassportPossession } from '@/types/passportPossessions';
 import { useDeletePassportPossession } from '@/lib/queries/passport-possession.mutations';
 import { successToast } from '@/components/toast/SuccessToast';
 import { destructiveToast } from '@/components/toast/DestructiveToast';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { format } from 'date-fns';
 
 export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
@@ -25,26 +21,50 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
     accessorKey: 'agencyDeliveryMethod',
     header: 'Agency Delivery Method',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+    },
   },
   {
     accessorKey: 'agencyDeliveryDate',
     header: 'Agency Delivery Date',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? format(new Date(value), 'dd/MM/yyyy') : '-';
+    },
   },
   {
     accessorKey: 'workAgreementStatus',
     header: 'Work Agreement Status',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+    },
   },
   {
     accessorKey: 'workAgreementDate',
     header: 'Work Agreement Date',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? format(new Date(value), 'dd/MM/yyyy') : '-';
+    },
   },
   {
     accessorKey: 'stampingStatus',
     header: 'Stamping Status',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+    },
   },
   {
     accessorKey: 'stampingDate',
     header: 'Stamping Date',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? format(new Date(value), 'dd/MM/yyyy') : '-';
+    },
   },
   {
     accessorKey: 'stampingRemarks',
@@ -53,18 +73,34 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
     accessorKey: 'receivedInOfficeDate',
     header: 'Received In Office Date',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? format(new Date(value), 'dd/MM/yyyy') : '-';
+    },
   },
   {
     accessorKey: 'receivedInOfficeDeliveryMethod',
     header: 'Received In Office Delivery Method',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+    },
   },
   {
     accessorKey: 'receivedToClientDate',
     header: 'Received To Client Date',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? format(new Date(value), 'dd/MM/yyyy') : '-';
+    },
   },
   {
     accessorKey: 'receivedToClientDeliveryMethod',
     header: 'Received To Client Delivery Method',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+    },
   },
   {
     accessorKey: 'remarks',
@@ -73,6 +109,10 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
     accessorKey: 'createdAt',
     header: 'Created At',
+    cell: ({ getValue }) => {
+      const value = getValue<string>();
+      return value ? format(new Date(value), 'dd/MM/yyyy') : '-';
+    },
   },
   {
     id: 'actions',
@@ -102,20 +142,14 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
       };
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive" onClick={handleDelete}>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-2">
+          <Button variant="default" size="icon" onClick={handleEdit}>
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button variant="destructive" size="icon" onClick={handleDelete}>
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       );
     },
   },
