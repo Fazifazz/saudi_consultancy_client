@@ -13,6 +13,8 @@ interface TableSearchProps {
   paramName?: string;
   replace?: boolean;
   searchResults?: string | number;
+  debounced?: boolean;
+  debounceMs?: number;
 }
 
 export function TableSearch({
@@ -22,6 +24,8 @@ export function TableSearch({
   paramName,
   replace = true,
   searchResults,
+  debounced = true,
+  debounceMs = 500,
 }: TableSearchProps) {
   const { table } = useTable<any>();
   const columnInstance = table.getColumn(column);
@@ -49,20 +53,47 @@ export function TableSearch({
     // columnInstance?.setFilterValue(v || undefined);
   }, [syncToUrl, searchParams, paramName, column]);
 
+  // Debounced effect for updating URL or Filter
+  useEffect(() => {
+    const handler = setTimeout(
+      () => {
+        if (syncToUrl) {
+          const param = paramName ?? column;
+          const currentUrlValue = searchParams?.get(param) ?? '';
+          if (value === currentUrlValue) return;
+
+          const params = new URLSearchParams(searchParams?.toString() ?? '');
+          if (!value) params.delete(param);
+          else params.set(param, value);
+
+          const url = pathname + (params.toString() ? `?${params.toString()}` : '');
+          if (replace) router.replace(url);
+          else router.push(url);
+        } else {
+          if (columnInstance?.getFilterValue() === value) return;
+          columnInstance?.setFilterValue(value || undefined);
+        }
+      },
+      debounced ? debounceMs : 0
+    );
+
+    return () => clearTimeout(handler);
+  }, [
+    value,
+    debounced,
+    debounceMs,
+    syncToUrl,
+    paramName,
+    column,
+    searchParams,
+    pathname,
+    replace,
+    router,
+    columnInstance,
+  ]);
+
   const onChange = (v: string) => {
     setValue(v);
-
-    if (syncToUrl) {
-      const param = paramName ?? column;
-      const params = new URLSearchParams(searchParams?.toString() ?? '');
-      if (!v) params.delete(param);
-      else params.set(param, v);
-      const url = pathname + (params.toString() ? `?${params.toString()}` : '');
-      if (replace) router.replace(url);
-      else router.push(url);
-    } else {
-      columnInstance?.setFilterValue(v || undefined);
-    }
   };
 
   if (!columnInstance && !syncToUrl) return null;
