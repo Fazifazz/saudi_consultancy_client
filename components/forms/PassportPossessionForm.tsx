@@ -1,10 +1,7 @@
 'use client';
 
-import * as React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import * as z from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,7 +12,6 @@ import { Label } from '../ui/label';
 import CommonDatePicker from '../core/CommonDatePicker';
 import { DELIVERY_MODES } from '@/lib/constants/delivery_modes';
 import { Separator } from '../ui/separator';
-import Link from 'next/link';
 import { CommonListForSelect } from '@/types/common';
 import {
   STAMPING_STATUS,
@@ -118,9 +114,6 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           Passport Possession
-          <Button variant={'outline'}>
-            <Link href={'/passport-possession/list'}>List</Link>
-          </Button>
         </CardTitle>
       </CardHeader>
       <Separator />
