@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 export async function loginAction(formData: FormData) {
   const body = {
     email: formData.get('email'),
+    phone: formData.get('phone'),
     password: formData.get('password'),
   };
 
@@ -22,7 +23,7 @@ export async function loginAction(formData: FormData) {
       console.log('data: ', data);
       if (data?.error) errorMessage = String(data.error);
       else if (data?.message) errorMessage = String(data.message);
-    } catch {}
+    } catch { }
     return { error: errorMessage };
   }
 
