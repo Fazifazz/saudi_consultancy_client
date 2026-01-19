@@ -15,6 +15,18 @@ import { format } from 'date-fns';
 
 export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
+    accessorKey: 'customer.name',
+    header: 'Customer',
+  },
+  {
+    accessorKey: 'customer.passportNumber',
+    header: 'Passport Number',
+  },
+  {
+    accessorKey: 'customer.contactNumber1',
+    header: 'Contact Number',
+  },
+  {
     accessorKey: 'agency',
     header: 'Agency',
   },

@@ -14,6 +14,8 @@ import { useTable } from './TableProvider';
 export function DataTable() {
   const { table } = useTable<any>();
 
+  const columnsCount = table.getVisibleFlatColumns().length;
+
   return (
     <div className="rounded-md border overflow-hidden">
       <Table>
@@ -44,7 +46,7 @@ export function DataTable() {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={table.getAllColumns().length} className="h-24 text-center">
+              <TableCell colSpan={columnsCount} className="h-24 text-center">
                 No results
               </TableCell>
             </TableRow>
