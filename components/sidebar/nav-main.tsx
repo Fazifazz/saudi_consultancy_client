@@ -12,6 +12,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -31,6 +32,14 @@ export function NavMain({
     }[];
   }[];
 }) {
+    const { open, setOpen } = useSidebar();
+  
+    const openSidebarIfClosed = () => {
+      if (!open) {
+        setOpen(true);
+      }
+    };
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -40,6 +49,7 @@ export function NavMain({
             key={item.title}
             asChild
             defaultOpen={item.isActive}
+            onClick={openSidebarIfClosed}
             className="group/collapsible"
           >
             <SidebarMenuItem>
