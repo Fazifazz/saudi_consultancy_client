@@ -1,6 +1,9 @@
+import { ICustomer } from "./customer";
+
 export interface IPassportPossession {
   _id: string;
-  transactionId: string;
+  customerId: string;
+  customer?: ICustomer;
   agency: string;
   agencyDeliveryMethod: string;
   agencyDeliveryDate: Date | null;

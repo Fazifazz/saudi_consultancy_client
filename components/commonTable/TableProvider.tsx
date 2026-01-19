@@ -23,7 +23,6 @@ export function TableProvider<TData>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-
   const table = useReactTable({
     data,
     columns,
@@ -38,7 +37,7 @@ export function TableProvider<TData>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    // Note: getFilteredRowModel is removed to avoid double filtering when using server-side search.
   });
 
   return <TableContext.Provider value={{ table }}>{children}</TableContext.Provider>;

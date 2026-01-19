@@ -30,7 +30,13 @@ export function TableSearch({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [value, setValue] = useState(() => (columnInstance?.getFilterValue() as string) ?? '');
+  const [value, setValue] = useState(() => {
+    if (syncToUrl) {
+      const param = paramName ?? column;
+      return searchParams?.get(param) ?? '';
+    }
+    return (columnInstance?.getFilterValue() as string) ?? '';
+  });
 
   // init from url when syncToUrl is true
   useEffect(() => {
@@ -38,33 +44,37 @@ export function TableSearch({
     const param = paramName ?? column;
     const v = searchParams?.get(param) ?? '';
     setValue(v);
-    columnInstance?.setFilterValue(v || undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [syncToUrl, searchParams?.toString(), paramName, column]);
+    // When syncing to URL, we avoid setting internal table filter value
+    // to prevent local filtering from hiding server-side results.
+    // columnInstance?.setFilterValue(v || undefined);
+  }, [syncToUrl, searchParams, paramName, column]);
 
   const onChange = (v: string) => {
     setValue(v);
-    columnInstance?.setFilterValue(v || undefined);
 
-    if (!syncToUrl) return;
-
-    const param = paramName ?? column;
-    const params = new URLSearchParams(searchParams?.toString() ?? '');
-    if (!v) params.delete(param);
-    else params.set(param, v);
-    const url = pathname + (params.toString() ? `?${params.toString()}` : '');
-    if (replace) router.replace(url);
-    else router.push(url);
+    if (syncToUrl) {
+      const param = paramName ?? column;
+      const params = new URLSearchParams(searchParams?.toString() ?? '');
+      if (!v) params.delete(param);
+      else params.set(param, v);
+      const url = pathname + (params.toString() ? `?${params.toString()}` : '');
+      if (replace) router.replace(url);
+      else router.push(url);
+    } else {
+      columnInstance?.setFilterValue(v || undefined);
+    }
   };
 
-  if (!columnInstance) return null;
+  if (!columnInstance && !syncToUrl) return null;
+
+  const displayPlaceholder = placeholder || `Search ${column}...`;
 
   return (
     <InputGroup className="max-w-sm">
       <InputGroupInput
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
+        placeholder={displayPlaceholder}
       />
       <InputGroupAddon>
         <Search />
