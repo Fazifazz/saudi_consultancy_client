@@ -29,13 +29,15 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
+      phone: '',
       password: '',
     },
   });
 
   const onSubmit = (values: LoginSchema) => {
     const formData = new FormData();
-    formData.append('email', values.email);
+    formData.append('email', values.email || '');
+    formData.append('phone', values.phone || '');
     formData.append('password', values.password);
 
     startTransition(async () => {
@@ -62,6 +64,14 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <FieldGroup>
+              <CommonTextInput
+                control={control}
+                type="number"
+                name="phone"
+                label="Phone"
+                placeholder="1234567890"
+                autoComplete="off"
+              />
               <CommonTextInput
                 control={control}
                 type="email"
