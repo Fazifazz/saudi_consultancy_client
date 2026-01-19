@@ -17,7 +17,7 @@ export default function PassportPossessionsTableClient({
 }: {
   passportPossessionsResponse: PassportPossessionListResponse;
 }) {
-  const passportPossessions = passportPossessionsResponse.data || []
+  const passportPossessions = passportPossessionsResponse.data || [];
   return (
     <TableProvider data={passportPossessions} columns={passportPossessionColumns}>
       <div className="flex flex-wrap gap-2">

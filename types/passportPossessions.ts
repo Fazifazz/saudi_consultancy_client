@@ -1,4 +1,4 @@
-import { ICustomer } from "./customer";
+import { ICustomer } from './customer';
 
 export interface IPassportPossession {
   _id: string;
