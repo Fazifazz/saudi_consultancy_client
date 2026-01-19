@@ -32,13 +32,13 @@ export function NavMain({
     }[];
   }[];
 }) {
-    const { open, setOpen } = useSidebar();
-  
-    const openSidebarIfClosed = () => {
-      if (!open) {
-        setOpen(true);
-      }
-    };
+  const { open, setOpen } = useSidebar();
+
+  const openSidebarIfClosed = () => {
+    if (!open) {
+      setOpen(true);
+    }
+  };
 
   return (
     <SidebarGroup>

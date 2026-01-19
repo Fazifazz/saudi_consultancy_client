@@ -112,9 +112,7 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          Passport Possession
-        </CardTitle>
+        <CardTitle className="flex items-center justify-between">Passport Possession</CardTitle>
       </CardHeader>
       <Separator />
       <CardContent>
