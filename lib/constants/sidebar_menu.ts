@@ -24,7 +24,7 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     title: 'Customer',
     url: '#',
     icon: Users,
-    isActive: true,
+    isActive: false,
     items: [
       { title: 'Create', url: '/customer/create' },
       { title: 'List', url: '/customer/list' },
@@ -34,7 +34,7 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     title: 'Transactions',
     url: '#',
     icon: ArrowLeftRight,
-    isActive: true,
+    isActive: false,
     items: [
       { title: 'Create', url: '/transaction/create' },
       { title: 'List', url: '/transaction/list' },
@@ -66,5 +66,15 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     ],
     // TODO: undo comment if color needed for sidebar menu
     // className:'bg-cyan-500 dark:bg-cyan-700 text-white'
+  },
+  {
+    title: 'Medical Payment',
+    url: '/medical-payment',
+    icon: IdCardLanyard,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/medical-payment/create' },
+      { title: 'List', url: '/medical-payment/list' },
+    ],
   },
 ];
