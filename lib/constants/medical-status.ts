@@ -12,3 +12,10 @@ export const MEDICAL_STATUS = [
   { label: 'Unfit', value: 'Unfit' },
   { label: 'Revisit', value: 'Revisit' },
 ];
+
+export const VFS_CENTERS = [
+  { label: 'Manjeri', value: 'Manjeri' },
+  { label: 'Kozhikode', value: 'Kozhikode' },
+  { label: 'Ernakulam', value: 'Ernakulam' },
+  { label: 'Others', value: 'Others' },
+];
