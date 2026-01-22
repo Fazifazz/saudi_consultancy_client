@@ -156,7 +156,7 @@ export function Pagination({
             }
           }}
         >
-          <SelectTrigger className="w-[90px]">
+          <SelectTrigger className="bg-gray-50 dark:bg-gray-800 w-[90px]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
