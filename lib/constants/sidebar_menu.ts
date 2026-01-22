@@ -6,6 +6,7 @@ import {
   ArrowLeftRight,
   IdCardLanyard,
   BriefcaseMedicalIcon,
+  ClipboardList,
 } from 'lucide-react';
 
 export type SidebarMenuItem = {
@@ -65,6 +66,16 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     items: [
       { title: 'Create', url: '/medical-status/create' },
       { title: 'List', url: '/medical-status/list' },
+    ],
+  },
+  {
+    title: 'VFS',
+    url: '/vfs',
+    icon: ClipboardList,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/vfs/create' },
+      { title: 'List', url: '/vfs/list' },
     ],
   },
   {
