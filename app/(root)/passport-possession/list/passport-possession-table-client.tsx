@@ -30,7 +30,7 @@ export default function PassportPossessionsTableClient({
 
         {/* <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" /> */}
 
-        <ColumnVisibility />
+        <ColumnVisibility defaultHiddenColumns={['stampingRemarks', 'createdAt']} />
 
         <ClearFilters syncToUrl />
       </div>

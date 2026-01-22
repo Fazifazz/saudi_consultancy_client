@@ -7,8 +7,10 @@ import { Check, ChevronsUpDown, Search, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Input } from '../ui/input';
 
-interface CommonSelectProps<TFormValues extends FieldValues>
-  extends Omit<InputHTMLAttributes<HTMLSelectElement>, 'name' | 'control'> {
+interface CommonSelectProps<TFormValues extends FieldValues> extends Omit<
+  InputHTMLAttributes<HTMLSelectElement>,
+  'name' | 'control'
+> {
   label: string;
   name: Path<TFormValues>;
   options: { value: string; label: string }[];
@@ -111,7 +113,9 @@ const CommonSelect = <TFormValues extends FieldValues>({
               break;
             case 'ArrowUp':
               e.preventDefault();
-              setActiveIndex((prev) => (prev - 1 + filteredOptions.length) % filteredOptions.length);
+              setActiveIndex(
+                (prev) => (prev - 1 + filteredOptions.length) % filteredOptions.length
+              );
               break;
             case 'Enter':
               e.preventDefault();
@@ -141,7 +145,7 @@ const CommonSelect = <TFormValues extends FieldValues>({
                   )}
                 >
                   <span className="truncate">
-                    {selectedOption ? selectedOption.label : (placeholder || `Select ${label}...`)}
+                    {selectedOption ? selectedOption.label : placeholder || `Select ${label}...`}
                   </span>
                   <div className="flex items-center gap-1 shrink-0">
                     {isClearable && field.value && (

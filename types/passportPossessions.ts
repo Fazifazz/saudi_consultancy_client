@@ -2,13 +2,14 @@ import { ICustomer } from './customer';
 
 export interface IPassportPossession {
   _id: string;
-  customerId: string;
-  customer?: ICustomer;
+  transactionId: string;
+  transaction: { customer?: ICustomer };
   agency: string;
   agencyDeliveryMethod: string;
   agencyDeliveryDate: Date | null;
   workAgreementStatus?: string;
-  workAgreementDate?: Date | null;
+  onProcessingAtRiyadhDate?: Date | null;
+  recievedInManjeriDate?: Date | null;
   stampingStatus?: string;
   stampingDate?: Date | null;
   stampingRemarks?: string;

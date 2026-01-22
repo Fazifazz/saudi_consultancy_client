@@ -36,17 +36,17 @@ import { useRouter } from 'next/navigation';
 interface PassportPossessionFormProps {
   id?: string | null;
   data?: Partial<IPassportPossession> | null;
-  customers: CommonListForSelect[];
+  transactions: CommonListForSelect[];
 }
 
 const defaultValues = {
-  customerId: '',
+  transactionId: '',
   agency: '',
   agencyDeliveryMethod: '',
   agencyDeliveryDate: new Date(),
   workAgreementStatus: '',
-  workAgreementRecievedInRiyadhDate: undefined,
-  workAgreementStatusDate: undefined,
+  workAgreementOnProcessingInRiyadhDate: undefined,
+  workAgreementRecievedInManjeriDate: undefined,
   stampingStatus: '',
   stampingDate: undefined,
   stampingRemarks: '',
@@ -56,7 +56,7 @@ const defaultValues = {
   receivedToClientDeliveryMethod: '',
 } satisfies PassportPossessionSchema;
 
-export function PassportPossessionForm({ customers, id, data }: PassportPossessionFormProps) {
+export function PassportPossessionForm({ transactions, id, data }: PassportPossessionFormProps) {
   const router = useRouter();
   // submit mutation
   const { mutate: createPassportPossession, isPending: createPending } =
@@ -73,6 +73,7 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
   });
 
   const workAgreementStatus = form.watch('workAgreementStatus');
+  const stampingStatus = form.watch('stampingStatus');
 
   function onSubmit(data: PassportPossessionSchema) {
     if (!id) {
@@ -105,9 +106,8 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
   }
 
   const DISABLE_BEFORE_DATE = new Date(Date.now() - 1000 * 60 * 60 * 24);
-  const CURRENT_WORK_AGREEMENT_STATUS_LABEL = WORK_AGREEMENT_STATUS.find(
-    (status) => status.value === workAgreementStatus
-  )?.label;
+  const CURRENT_STAMPING_STATUS =
+    STAMPING_STATUS.find((status) => status.value === stampingStatus)?.label ?? 'Stamping';
 
   return (
     <Card className="w-full">
@@ -123,10 +123,10 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
         >
           <CommonSelect
             control={form.control}
-            name="customerId"
-            label="Choose a Customer"
-            placeholder="Select Customer"
-            options={customers}
+            name="transactionId"
+            label="Choose a Purpose of customer"
+            placeholder="Select Purpose of customer"
+            options={transactions}
           />
           <FieldGroup>
             <Label className="bg-green-200 dark:bg-green-800 p-3 rounded">Agency</Label>
@@ -165,19 +165,19 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
                 placeholder="Select Status"
                 options={WORK_AGREEMENT_STATUS}
               />
-              {workAgreementStatus === WORK_AGREEMENT_STATUS_ENUM.RECIEVED_IN_RIYADH ? (
+              {workAgreementStatus === WORK_AGREEMENT_STATUS_ENUM.ON_PROCESSING_AT_RIYADH ? (
                 <CommonDatePicker
                   control={form.control}
-                  name="workAgreementRecievedInRiyadhDate"
-                  label="Recieved In Riyadh Date"
+                  name="workAgreementOnProcessingInRiyadhDate"
+                  label="Work Agreement On Processing In Riyadh Date"
                   className="w-full"
                   disableBefore={DISABLE_BEFORE_DATE}
                 />
-              ) : workAgreementStatus !== WORK_AGREEMENT_STATUS_ENUM.PENDING ? (
+              ) : workAgreementStatus === WORK_AGREEMENT_STATUS_ENUM.MANJERI ? (
                 <CommonDatePicker
                   control={form.control}
-                  name="workAgreementStatusDate"
-                  label={`Work Agreement ${CURRENT_WORK_AGREEMENT_STATUS_LABEL} Date`}
+                  name="workAgreementRecievedInManjeriDate"
+                  label={`Work Agreement Recieved In Manjeri Date`}
                   className="w-full"
                   disableBefore={DISABLE_BEFORE_DATE}
                 />
@@ -194,19 +194,24 @@ export function PassportPossessionForm({ customers, id, data }: PassportPossessi
                 placeholder="Select Status"
                 options={STAMPING_STATUS}
               />
-              <CommonTextArea
-                control={form.control}
-                name="stampingRemarks"
-                label="Stamping Remarks"
-                placeholder="Stamping Remarks..."
-              />
-              <CommonDatePicker
-                control={form.control}
-                name="stampingDate"
-                label="Stamping Date"
-                className="w-full"
-                disableBefore={DISABLE_BEFORE_DATE}
-              />
+
+              {stampingStatus && stampingStatus !== 'PENDING' && (
+                <>
+                  <CommonDatePicker
+                    control={form.control}
+                    name="stampingDate"
+                    label={`${CURRENT_STAMPING_STATUS} Date`}
+                    className="w-full"
+                    disableBefore={DISABLE_BEFORE_DATE}
+                  />
+                  <CommonTextArea
+                    control={form.control}
+                    name="stampingRemarks"
+                    label={`${CURRENT_STAMPING_STATUS} Remarks`}
+                    placeholder={`${CURRENT_STAMPING_STATUS} Remarks...`}
+                  />
+                </>
+              )}
             </div>
           </FieldGroup>
           <FieldGroup>

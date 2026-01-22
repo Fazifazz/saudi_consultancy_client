@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -9,8 +10,20 @@ import {
 import { Button } from '@/components/ui/button';
 import { useTable } from '../TableProvider';
 
-export function ColumnVisibility() {
+interface ColumnVisibilityProps {
+  defaultHiddenColumns?: string[];
+}
+
+export function ColumnVisibility({ defaultHiddenColumns }: ColumnVisibilityProps) {
   const { table } = useTable<any>();
+
+  useEffect(() => {
+    if (defaultHiddenColumns) {
+      defaultHiddenColumns.forEach((columnId) => {
+        table.getColumn(columnId)?.toggleVisibility(false);
+      });
+    }
+  }, [table, defaultHiddenColumns]);
 
   return (
     <DropdownMenu>

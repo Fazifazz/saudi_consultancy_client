@@ -80,13 +80,19 @@ const CommonTextInput = <TFormValues extends FieldValues>({
           } else {
             field.onChange(e.target.value);
           }
-        }
+        };
 
         // For text inputs (default behavior)
         return (
           <Field data-invalid={fieldState.invalid}>
             <FieldLabel>{label}</FieldLabel>
-            <Input {...field} {...props} type={type} placeholder={placeholder} onChange={handleInputChange} />
+            <Input
+              {...field}
+              {...props}
+              type={type}
+              placeholder={placeholder}
+              onChange={handleInputChange}
+            />
             {fieldState.error && <FieldError errors={[fieldState.error]} />}
           </Field>
         );

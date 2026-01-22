@@ -12,18 +12,19 @@ import { destructiveToast } from '@/components/toast/DestructiveToast';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
+import { WORK_AGREEMENT_STATUS_ENUM } from '@/lib/constants/status';
 
 export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
-    accessorKey: 'customer.name',
+    accessorKey: 'transaction.customer.name',
     header: 'Customer',
   },
   {
-    accessorKey: 'customer.passportNumber',
+    accessorKey: 'transaction.customer.passportNumber',
     header: 'Passport Number',
   },
   {
-    accessorKey: 'customer.contactNumber1',
+    accessorKey: 'transaction.customer.contactNumber1',
     header: 'Contact Number',
   },
   {
@@ -35,7 +36,13 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'Agency Delivery Method',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-amber-200 dark:bg-amber-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
@@ -51,15 +58,44 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'Work Agreement Status',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-green-200 dark:bg-green-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
-    accessorKey: 'workAgreementDate',
     header: 'Work Agreement Date',
-    cell: ({ getValue }) => {
+    cell: ({ row, getValue }) => {
       const value = getValue<string>();
-      return value ? format(new Date(value), 'dd/MM/yyyy') : '-';
+      const date =
+        value === WORK_AGREEMENT_STATUS_ENUM.ON_PROCESSING_AT_RIYADH
+          ? row.original.onProcessingAtRiyadhDate
+          : value === WORK_AGREEMENT_STATUS_ENUM.MANJERI
+            ? row.original.recievedInManjeriDate
+            : null;
+
+      return (
+        <div className="flex flex-col gap-1">
+          {value ? (
+            <Badge variant="secondary" className="w-fit">
+              {value}
+            </Badge>
+          ) : (
+            '-'
+          )}
+          {date ? (
+            <Badge variant="secondary" className="w-fit">
+              {format(new Date(date), 'dd/MM/yyyy')}
+            </Badge>
+          ) : (
+            '-'
+          )}
+        </div>
+      );
     },
   },
   {
@@ -67,7 +103,13 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'Stamping Status',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-sky-200 dark:bg-sky-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
@@ -92,10 +134,16 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   },
   {
     accessorKey: 'receivedInOfficeDeliveryMethod',
-    header: 'Received In Office Delivery Method',
+    header: 'PP Received In Office Delivery Method',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-amber-200 dark:bg-amber-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
@@ -108,15 +156,17 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   },
   {
     accessorKey: 'receivedToClientDeliveryMethod',
-    header: 'Received To Client Delivery Method',
+    header: 'PP Received To Client Delivery Method',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary">{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-sky-200 dark:bg-sky-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
-  },
-  {
-    accessorKey: 'remarks',
-    header: 'Remarks',
   },
   {
     accessorKey: 'createdAt',
