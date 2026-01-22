@@ -9,6 +9,7 @@ interface CommonTextInputProps<
   label: string;
   name: Path<TFormValues>;
   control: UseFormReturn<TFormValues>['control'];
+  isNumericString?: boolean;
 }
 
 const CommonTextInput = <TFormValues extends FieldValues>({
@@ -17,6 +18,7 @@ const CommonTextInput = <TFormValues extends FieldValues>({
   label,
   placeholder,
   type,
+  isNumericString = false,
   ...props
 }: CommonTextInputProps<TFormValues>) => {
   // Determine if this is a number input
@@ -71,11 +73,20 @@ const CommonTextInput = <TFormValues extends FieldValues>({
           );
         }
 
+        const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          if (isNumericString) {
+            const value = e.target.value.replace(/[^0-9]/g, '');
+            field.onChange(value);
+          } else {
+            field.onChange(e.target.value);
+          }
+        }
+
         // For text inputs (default behavior)
         return (
           <Field data-invalid={fieldState.invalid}>
             <FieldLabel>{label}</FieldLabel>
-            <Input {...field} {...props} type={type} placeholder={placeholder} />
+            <Input {...field} {...props} type={type} placeholder={placeholder} onChange={handleInputChange} />
             {fieldState.error && <FieldError errors={[fieldState.error]} />}
           </Field>
         );

@@ -66,11 +66,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
             <FieldGroup>
               <CommonTextInput
                 control={control}
-                type="number"
                 name="phone"
                 label="Phone"
                 placeholder="1234567890"
                 autoComplete="off"
+                isNumericString
               />
               <CommonTextInput
                 control={control}
