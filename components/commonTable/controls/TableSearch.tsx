@@ -101,7 +101,7 @@ export function TableSearch({
   const displayPlaceholder = placeholder || `Search ${column}...`;
 
   return (
-    <InputGroup className="max-w-sm">
+    <InputGroup className="max-w-sm bg-white dark:bg-gray-800">
       <InputGroupInput
         value={value}
         onChange={(e) => onChange(e.target.value)}

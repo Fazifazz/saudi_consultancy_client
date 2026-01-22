@@ -24,7 +24,7 @@ export default async function AuthLayout({
               <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
               <AppBreadcrumb />
             </header>
-            <main className="bg-background p-5">{children}</main>
+            <main className="bg-gray-200 dark:bg-background p-5 flex-1">{children}</main>
           </SidebarInset>
         </SidebarProvider>
       </UserProvider>

@@ -17,7 +17,7 @@ export function DataTable() {
   const columnsCount = table.getVisibleFlatColumns().length;
 
   return (
-    <div className="rounded-md border overflow-hidden">
+    <div className="rounded-md border overflow-hidden bg-white dark:bg-gray-800">
       <Table>
         <TableHeader className="bg-primary">
           {table.getHeaderGroups().map((hg: any) => (
