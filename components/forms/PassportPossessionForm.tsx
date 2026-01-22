@@ -106,9 +106,8 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
   }
 
   const DISABLE_BEFORE_DATE = new Date(Date.now() - 1000 * 60 * 60 * 24);
-  const CURRENT_STAMPING_STATUS = STAMPING_STATUS.find(
-    (status) => status.value === stampingStatus
-  )?.label ?? "Stamping";
+  const CURRENT_STAMPING_STATUS =
+    STAMPING_STATUS.find((status) => status.value === stampingStatus)?.label ?? 'Stamping';
 
   return (
     <Card className="w-full">
@@ -196,7 +195,7 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
                 options={STAMPING_STATUS}
               />
 
-              {stampingStatus && stampingStatus !== "PENDING" && (
+              {stampingStatus && stampingStatus !== 'PENDING' && (
                 <>
                   <CommonDatePicker
                     control={form.control}

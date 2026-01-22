@@ -36,7 +36,13 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'Agency Delivery Method',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary" className='bg-amber-200 dark:bg-amber-600'>{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-amber-200 dark:bg-amber-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
@@ -52,7 +58,13 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'Work Agreement Status',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary" className='bg-green-200 dark:bg-green-600'>{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-green-200 dark:bg-green-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
@@ -69,14 +81,14 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
       return (
         <div className="flex flex-col gap-1">
           {value ? (
-            <Badge variant="secondary" className='w-fit'>
+            <Badge variant="secondary" className="w-fit">
               {value}
             </Badge>
           ) : (
             '-'
           )}
           {date ? (
-            <Badge variant="secondary" className='w-fit'>
+            <Badge variant="secondary" className="w-fit">
               {format(new Date(date), 'dd/MM/yyyy')}
             </Badge>
           ) : (
@@ -91,7 +103,13 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'Stamping Status',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary" className='bg-sky-200 dark:bg-sky-600'>{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-sky-200 dark:bg-sky-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
@@ -119,7 +137,13 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'PP Received In Office Delivery Method',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary" className='bg-amber-200 dark:bg-amber-600'>{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-amber-200 dark:bg-amber-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
@@ -135,7 +159,13 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
     header: 'PP Received To Client Delivery Method',
     cell: ({ getValue }) => {
       const value = getValue<string>();
-      return value ? <Badge variant="secondary" className='bg-sky-200 dark:bg-sky-600'>{value}</Badge> : '-';
+      return value ? (
+        <Badge variant="secondary" className="bg-sky-200 dark:bg-sky-600">
+          {value}
+        </Badge>
+      ) : (
+        '-'
+      );
     },
   },
   {
