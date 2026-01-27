@@ -44,9 +44,13 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
   },
   {
     title: 'Visa Details',
-    url: '/visa-details',
+    url: '#',
     icon: IdCard,
-    isActive: true,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/visa-details/create' },
+      { title: 'List', url: '/visa-details/list' },
+    ],
   },
   {
     title: 'Tickets',
