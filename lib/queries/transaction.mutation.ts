@@ -29,6 +29,22 @@ export function useDeleteTransaction() {
   });
 }
 
+export function useUpdateTransaction() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateTransaction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transaction'] });
+    },
+  });
+}
+
+const updateTransaction = async ({ id, data }: { id: string; data: TransactionSchema }) => {
+  const res = await axios.put(`/api/transaction/${id}`, data);
+  return res.data;
+};
+
 const deleteTransaction = async (id: string) => {
   const res = await axios.delete(`/api/transaction?id=${id}`);
   return res.data;

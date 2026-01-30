@@ -7,6 +7,7 @@ import {
   IdCardLanyard,
   BriefcaseMedicalIcon,
   ClipboardList,
+  LayoutGrid,
 } from 'lucide-react';
 
 export type SidebarMenuItem = {
@@ -101,6 +102,16 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     items: [
       { title: 'Create', url: '/medical-payment/create' },
       { title: 'List', url: '/medical-payment/list' },
+    ],
+  },
+  {
+    title: 'Trade Certificate',
+    url: '/trade-certificate',
+    icon: LayoutGrid,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/trade-certificate/create' },
+      { title: 'List', url: '/trade-certificate/list' },
     ],
   },
 ];

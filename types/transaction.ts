@@ -2,7 +2,7 @@ export interface ITransaction {
   _id: string;
   customerId: string;
   name: string;
-  remarks: Date;
+  remarks?: string;
   isDeleted: Boolean;
   createdAt: Date;
 }
