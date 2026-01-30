@@ -79,7 +79,9 @@ function TransactionActionsCell({ transaction }: { transaction: ITransaction }) 
           <DropdownMenuItem onClick={() => navigator.clipboard.writeText(transaction._id)}>
             Copy Transaction ID
           </DropdownMenuItem>
-          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push(`/transaction/${transaction._id}`)}>
+            Edit
+          </DropdownMenuItem>
           <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
             Delete
           </DropdownMenuItem>

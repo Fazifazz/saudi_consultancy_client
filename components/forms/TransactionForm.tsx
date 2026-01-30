@@ -11,43 +11,75 @@ import CommonTextInput from '../core/CommonTextInput';
 import { destructiveToast } from '../toast/DestructiveToast';
 import { successToast } from '../toast/SuccessToast';
 import CommonSelect from '../core/CommonSelect';
-import { useCreateTransaction } from '@/lib/queries/transaction.mutation';
+import { TRANSACTION_PURPOSES } from '../../lib/constants/transaction';
+import { useCreateTransaction, useUpdateTransaction } from '@/lib/queries/transaction.mutation';
 import { transactionSchema, TransactionSchema } from '@/lib/validations/transaction';
+import { ITransaction } from '@/types/transaction';
 
 export function TransactionForm({
   className,
   customers,
+  transactionDetails,
   ...props
-}: React.ComponentProps<'div'> & { customers: { value: string; label: string }[] }) {
+}: React.ComponentProps<'div'> & {
+  customers: { value: string; label: string }[];
+  transactionDetails?: ITransaction;
+}) {
   const router = useRouter();
   const createTransaction = useCreateTransaction();
+  const updateTransaction = useUpdateTransaction();
+
+  const isEditing = !!transactionDetails;
 
   const { control, handleSubmit } = useForm<TransactionSchema>({
     resolver: zodResolver(transactionSchema),
-    defaultValues: {
-      name: '',
-      remarks: '',
-      customerId: '',
-    },
+    defaultValues: transactionDetails
+      ? {
+          name: transactionDetails.name,
+          customerId: transactionDetails.customerId,
+          remarks: transactionDetails.remarks,
+        }
+      : {
+          name: '',
+          customerId: '',
+          remarks: '',
+        },
   });
 
   const onSubmit = (values: TransactionSchema) => {
-    createTransaction.mutate(values, {
-      onSuccess: () => {
-        successToast('Transaction created successfully');
-        router.push('/transaction/list');
-      },
-      onError: (error: any) => {
-        destructiveToast(error?.response?.data?.message || 'Something went wrong');
-      },
-    });
+    if (isEditing) {
+      updateTransaction.mutate(
+        { id: transactionDetails._id, data: values },
+        {
+          onSuccess: () => {
+            successToast('Transaction updated successfully');
+            router.push('/transaction/list');
+          },
+          onError: (error: any) => {
+            destructiveToast(error?.response?.data?.message || 'Something went wrong');
+          },
+        }
+      );
+    } else {
+      createTransaction.mutate(values, {
+        onSuccess: () => {
+          successToast('Transaction created successfully');
+          router.push('/transaction/list');
+        },
+        onError: (error: any) => {
+          destructiveToast(error?.response?.data?.message || 'Something went wrong');
+        },
+      });
+    }
   };
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader className="text-start">
-          <CardTitle className="text-xl">Create Transaction</CardTitle>
+          <CardTitle className="text-xl">
+            {isEditing ? 'Edit Transaction' : 'Create Transaction'}
+          </CardTitle>
         </CardHeader>
 
         <CardContent>
@@ -55,7 +87,12 @@ export function TransactionForm({
             <FieldGroup>
               <div className="grid grid-cols-2 place-content-between gap-4">
                 <div className="space-y-4">
-                  <CommonTextInput control={control} name="name" label="Name" />
+                  <CommonSelect
+                    control={control}
+                    name="name"
+                    label="Purpose"
+                    options={TRANSACTION_PURPOSES || []}
+                  />
                   <CommonSelect
                     control={control}
                     name="customerId"
@@ -74,7 +111,11 @@ export function TransactionForm({
                   {createTransaction.isPending ? 'Reseting...' : 'Reset'}
                 </Button>
                 <Button className="w-39" type="submit" disabled={createTransaction.isPending}>
-                  {createTransaction.isPending ? 'Saving...' : 'Create Transaction'}
+                  {createTransaction.isPending
+                    ? 'Saving...'
+                    : isEditing
+                      ? 'Update Transaction'
+                      : 'Create Transaction'}
                 </Button>
               </div>
             </FieldGroup>

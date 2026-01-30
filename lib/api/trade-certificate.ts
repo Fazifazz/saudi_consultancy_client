@@ -1,8 +1,8 @@
+import { TradeCertificateResponse } from '@/types/trade-certificate';
 import { getToken } from '../token';
 import { isValidDateString } from '../date';
-import { TransactionsResponse } from '@/types/transaction';
 
-interface FetchTransactionsParams {
+interface FetchTradeCertificatesParams {
   page?: number;
   limit?: number;
   sortBy?: string;
@@ -12,9 +12,9 @@ interface FetchTransactionsParams {
   to?: string;
 }
 
-export async function fetchTransactions(
-  params?: FetchTransactionsParams
-): Promise<TransactionsResponse> {
+export async function fetchTradeCertificates(
+  params?: FetchTradeCertificatesParams
+): Promise<TradeCertificateResponse> {
   const searchParams = new URLSearchParams();
   const token = await getToken();
 
@@ -35,7 +35,7 @@ export async function fetchTransactions(
   }
 
   const url =
-    `${process.env.NEXT_PUBLIC_API_URL}/transaction` +
+    `${process.env.NEXT_PUBLIC_API_URL}/trade-certificate` +
     (searchParams.toString() ? `?${searchParams}` : '');
 
   const response = await fetch(url, {
@@ -47,48 +47,29 @@ export async function fetchTransactions(
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch transactions: ${response.statusText}`);
+    throw new Error(`Failed to fetch trade certificates: ${response.statusText}`);
   }
 
   const data = await response.json();
-  console.log('data', data);
   return data;
 }
 
-export const fetchTransactionsForSelect = async () => {
-  const token = await getToken();
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/transaction/select`;
-
-  const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store',
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch transactions for select: ${response.statusText}`);
-  }
-
-  const res = await response.json();
-  console.log('response', res);
-  return res?.data || [];
-};
-
-export async function fetchOneTransaction(transactionId: string) {
+export async function fetchOneTradeCertificate(tradeCertificateId: string) {
   const token = await getToken();
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transaction/${transactionId}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    cache: 'no-store',
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/trade-certificate/${tradeCertificateId}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    }
+  );
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch vfs: ${response.statusText}`);
+    throw new Error(`Failed to fetch trade certificate: ${response.statusText}`);
   }
 
   const res = await response.json();
