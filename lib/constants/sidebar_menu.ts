@@ -114,4 +114,14 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
       { title: 'List', url: '/trade-certificate/list' },
     ],
   },
+  {
+    title: 'KSA Status',
+    url: '/ksa-status',
+    icon: ClipboardList,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/ksa-status/create' },
+      { title: 'List', url: '/ksa-status/list' },
+    ],
+  },
 ];
