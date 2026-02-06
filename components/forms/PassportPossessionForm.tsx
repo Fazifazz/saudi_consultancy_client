@@ -111,8 +111,11 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">Passport Possession</CardTitle>
+      <CardHeader className="flex items-center justify-between">
+        <CardTitle>Passport Possession</CardTitle>
+        <Button variant="outline" onClick={() => router.push('/passport-possession/list')}>
+          List
+        </Button>
       </CardHeader>
       <Separator />
       <CardContent>

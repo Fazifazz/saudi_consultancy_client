@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { MedicalPaymentsListResponse } from '@/types/medical-payment';
 import { medicalPaymentColumns } from './medical-payment-table-columns';
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
@@ -27,8 +27,6 @@ export default function MedicalPaymentsTableClient({
           paramName="search"
           searchResults={medicalPaymentsResponse.meta.total}
         />
-
-        <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_date" />
 
         <ColumnVisibility />
 

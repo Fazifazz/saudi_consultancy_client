@@ -87,8 +87,11 @@ export function MedicalPaymentForm({
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
-        <CardHeader className="text-start">
+        <CardHeader className="flex items-center justify-between">
           <CardTitle className="text-xl">{`${isEditing ? 'Edit' : 'Create'} Medical Payment`}</CardTitle>
+          <Button variant="outline" onClick={() => router.push('/medical-payment/list')}>
+            List
+          </Button>
         </CardHeader>
 
         <CardContent>

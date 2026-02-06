@@ -136,10 +136,13 @@ export function TradeCertificateForm({
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
-        <CardHeader className="text-start">
+        <CardHeader className="flex items-center justify-between">
           <CardTitle className="text-xl">
             {isEditing ? 'Edit Trade Certificate' : 'Create Trade Certificate'}
           </CardTitle>
+          <Button variant="outline" onClick={() => router.push('/trade-certificate/list')}>
+            List
+          </Button>
         </CardHeader>
 
         <CardContent>

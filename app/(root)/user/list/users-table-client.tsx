@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { UsersResponse } from '@/types/user';
 import { userColumns } from './user-table-columns';
 import { TableFilter } from '@/components/commonTable/controls/TableFilter';
@@ -35,8 +35,6 @@ export default function UsersTableClient({ usersResponse }: { usersResponse: Use
           syncToUrl
           paramName="role"
         />
-
-        <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" />
 
         <ColumnVisibility />
 

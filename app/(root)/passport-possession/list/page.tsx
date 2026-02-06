@@ -1,5 +1,7 @@
 import { fetchPassportPossessions } from '@/lib/api/passport-possession';
 import PassportPossessionsTableClient from './passport-possession-table-client';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 interface PageProps {
   searchParams: {
@@ -27,7 +29,12 @@ export default async function PassportPossessionsPage({ searchParams }: PageProp
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Passport Possessions</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Passport Possessions</h1>
+        <Link href="/passport-possession/create" className={buttonVariants({ variant: 'outline' })}>
+          Create
+        </Link>
+      </div>
 
       <PassportPossessionsTableClient passportPossessionsResponse={passportPossessions} />
     </div>

@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { VisaDetailsResponse } from '@/types/visa-details';
 import { visaDetailsColumns } from './visa-details-table-columns';
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
@@ -26,13 +26,6 @@ export default function VisaDetailsTableClient({
           syncToUrl
           paramName="search"
           searchResults={visaDetailsResponse.meta.total}
-        />
-
-        <TableDateFilter
-          column="stampingDate"
-          mode="range"
-          syncToUrl
-          paramName="range_stampingDate"
         />
 
         <ColumnVisibility />

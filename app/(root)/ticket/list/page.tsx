@@ -1,5 +1,7 @@
 import { fetchTickets } from '@/lib/api/ticket';
 import TicketsTableClient from './tickets-table-client';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 interface PageProps {
   searchParams: {
@@ -27,7 +29,12 @@ export default async function TicketsPage({ searchParams }: PageProps) {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Tickets</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Tickets</h1>
+        <Link href="/ticket/create" className={buttonVariants({ variant: 'outline' })}>
+          Create
+        </Link>
+      </div>
 
       {/* Client table only receives data */}
       <TicketsTableClient ticketsResponse={tickets} />

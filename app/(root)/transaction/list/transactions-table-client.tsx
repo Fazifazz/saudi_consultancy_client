@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
 import { TransactionsResponse } from '@/types/transaction';
 import { transactionColumns } from './transactions-table-columns';
@@ -26,13 +26,6 @@ export default function TransactionsTableClient({
           syncToUrl
           paramName="search"
           searchResults={transactionsResponse.meta.total}
-        />
-
-        <TableDateFilter
-          column="formattedCreatedAt"
-          mode="range"
-          syncToUrl
-          paramName="range_createdAt"
         />
 
         <ColumnVisibility />

@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { CustomersResponse } from '@/types/customer';
 import { customerColumns } from './customer-table-columns';
 import { TableFilter } from '@/components/commonTable/controls/TableFilter';
@@ -28,8 +28,6 @@ export default function CustomersTableClient({
           paramName="search"
           searchResults={customersResponse.meta.total}
         />
-
-        <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" />
 
         <ColumnVisibility />
 
