@@ -1,5 +1,7 @@
 import { fetchTransactions } from '@/lib/api/transaction';
 import TransactionsTableClient from './transactions-table-client';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 interface PageProps {
   searchParams: {
@@ -27,7 +29,12 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Transactions</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Transactions</h1>
+        <Link href="/transaction/create" className={buttonVariants({ variant: 'outline' })}>
+          Create
+        </Link>
+      </div>
 
       <TransactionsTableClient transactionsResponse={transactions} />
     </div>

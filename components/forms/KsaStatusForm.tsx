@@ -94,10 +94,13 @@ export function KsaStatusForm({
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
-        <CardHeader className="text-start">
+        <CardHeader className="flex items-center justify-between">
           <CardTitle className="text-xl">
             {isEditing ? 'Edit KSA Status' : 'Create KSA Status'}
           </CardTitle>
+          <Button variant="outline" onClick={() => router.push('/ksa-status/list')}>
+            List
+          </Button>
         </CardHeader>
 
         <CardContent>

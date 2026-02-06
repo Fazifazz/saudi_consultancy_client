@@ -84,8 +84,11 @@ export function TicketForm({
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
-        <CardHeader className="text-start">
+        <CardHeader className="flex items-center justify-between">
           <CardTitle className="text-xl">{isEditing ? 'Edit Ticket' : 'Create Ticket'}</CardTitle>
+          <Button variant="outline" onClick={() => router.push('/ticket/list')}>
+            List
+          </Button>
         </CardHeader>
 
         <CardContent>

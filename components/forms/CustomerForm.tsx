@@ -70,8 +70,11 @@ export function CustomerForm({ className, id, customer, ...props }: CustomerForm
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
-        <CardHeader className="text-start">
+        <CardHeader className="flex items-center justify-between">
           <CardTitle className="text-xl">{isEdit ? 'Edit Customer' : 'Create Customer'}</CardTitle>
+          <Button variant="outline" onClick={() => router.push('/customer/list')}>
+            List
+          </Button>
         </CardHeader>
 
         <CardContent>

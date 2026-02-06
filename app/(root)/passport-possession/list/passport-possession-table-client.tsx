@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { PassportPossessionListResponse } from '@/types/passportPossessions';
 import { passportPossessionColumns } from './passport-possession-table-columns';
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
@@ -27,8 +27,6 @@ export default function PassportPossessionsTableClient({
           paramName="search"
           searchResults={passportPossessionsResponse.meta.total}
         />
-
-        {/* <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" /> */}
 
         <ColumnVisibility defaultHiddenColumns={['stampingRemarks', 'createdAt']} />
 

@@ -1,5 +1,7 @@
 import { fetchVisaDetails } from '@/lib/api/visa-details';
 import VisaDetailsTableClient from './visa-details-table-client';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 interface PageProps {
   searchParams: {
@@ -26,7 +28,12 @@ export default async function VisaDetailsPage({ searchParams }: PageProps) {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Visa Details</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Visa Details</h1>
+        <Link href="/visa-details/create" className={buttonVariants({ variant: 'outline' })}>
+          Create
+        </Link>
+      </div>
 
       {/* Client table only receives data */}
       <VisaDetailsTableClient visaDetailsResponse={visaDetails} />

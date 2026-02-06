@@ -1,5 +1,7 @@
 import { fetchUsers } from '@/lib/api/users';
 import UsersTableClient from './users-table-client';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 interface PageProps {
   searchParams: {
@@ -28,7 +30,12 @@ export default async function UsersPage({ searchParams }: PageProps) {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Users</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Users</h1>
+        <Link href="/user/create" className={buttonVariants({ variant: 'outline' })}>
+          Create
+        </Link>
+      </div>
 
       {/* Client table only receives data */}
       <UsersTableClient usersResponse={users} />

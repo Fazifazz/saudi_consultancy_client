@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
 import { TradeCertificateResponse } from '@/types/trade-certificate';
 import { tradeCertificateColumns } from './trade-certificate-table-columns';
@@ -27,8 +27,6 @@ export default function TradeCertificateTableClient({
           paramName="search"
           searchResults={tradeCertificateResponse.meta.total}
         />
-
-        <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" />
 
         <ColumnVisibility />
 

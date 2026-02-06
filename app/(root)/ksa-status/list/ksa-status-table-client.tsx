@@ -7,7 +7,7 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-import { TableDateFilter } from '@/components/commonTable/controls/TableDateFilter';
+
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
 import { KsaStatusResponse } from '@/types/ksa-status';
 import { ksaStatusColumns } from './ksa-status-table-columns';
@@ -27,8 +27,6 @@ export default function KsaStatusTableClient({
           paramName="search"
           searchResults={ksaStatusResponse.meta.total}
         />
-
-        <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_createdAt" />
 
         <ColumnVisibility />
 

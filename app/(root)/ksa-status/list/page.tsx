@@ -1,5 +1,7 @@
 import { fetchKsaStatuses } from '@/lib/api/ksa-status';
 import KsaStatusTableClient from './ksa-status-table-client';
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button';
 
 interface PageProps {
   searchParams: {
@@ -27,7 +29,12 @@ export default async function KsaStatusPage({ searchParams }: PageProps) {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">KSA Status</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">KSA Status</h1>
+        <Link href="/ksa-status/create" className={buttonVariants({ variant: 'outline' })}>
+          Create
+        </Link>
+      </div>
 
       <KsaStatusTableClient ksaStatusResponse={ksaStatuses} />
     </div>
