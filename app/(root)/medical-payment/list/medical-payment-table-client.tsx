@@ -7,19 +7,18 @@ import {
   TableSearch,
   ColumnVisibility,
 } from '@/components/commonTable';
-
-import { MedicalPaymentsListResponse } from '@/types/medical-payment';
+import { MedicalPaymentsResponse } from '@/types/medical-payment';
 import { medicalPaymentColumns } from './medical-payment-table-columns';
 import { ClearFilters } from '@/components/commonTable/controls/ClearFilters';
 
 export default function MedicalPaymentsTableClient({
   medicalPaymentsResponse,
 }: {
-  medicalPaymentsResponse: MedicalPaymentsListResponse;
+  medicalPaymentsResponse: MedicalPaymentsResponse;
 }) {
   const medicalPayments = medicalPaymentsResponse.data;
   return (
-    <TableProvider data={medicalPayments} columns={medicalPaymentColumns()}>
+    <TableProvider data={medicalPayments} columns={medicalPaymentColumns}>
       <div className="flex flex-wrap gap-2">
         <TableSearch
           column="amount"
@@ -27,6 +26,8 @@ export default function MedicalPaymentsTableClient({
           paramName="search"
           searchResults={medicalPaymentsResponse.meta.total}
         />
+
+        {/* <TableDateFilter column="createdAt" mode="range" syncToUrl paramName="range_date" /> */}
 
         <ColumnVisibility />
 

@@ -124,4 +124,14 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
       { title: 'List', url: '/ksa-status/list' },
     ],
   },
+  {
+    title: 'Agency Payment',
+    url: '/agency-payment',
+    icon: IdCardLanyard,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/agency-payment/create' },
+      { title: 'List', url: '/agency-payment/list' },
+    ],
+  },
 ];
