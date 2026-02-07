@@ -55,6 +55,10 @@ const CommonTextInput = <TFormValues extends FieldValues>({
             // If invalid number, don't update (prevents invalid states)
           };
 
+          const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+            e.target.select();
+          };
+
           return (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>{label}</FieldLabel>
@@ -64,6 +68,7 @@ const CommonTextInput = <TFormValues extends FieldValues>({
                 value={displayValue}
                 onChange={handleNumberChange}
                 onBlur={field.onBlur}
+                onFocus={handleFocus}
                 name={field.name}
                 ref={field.ref}
                 placeholder={placeholder}

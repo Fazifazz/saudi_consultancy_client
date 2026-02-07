@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { IMedicalPayment } from '@/types/medical-payment';
+import { IAgencyPayment } from '@/types/agency-payment';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -12,12 +12,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useDeleteMedicalPayment } from '@/lib/queries/medical-payment.mutation';
+import { useDeleteAgencyPayment } from '@/lib/queries/agency-payment.mutation';
 import { successToast } from '@/components/toast/SuccessToast';
 import { destructiveToast } from '@/components/toast/DestructiveToast';
 import { AxiosError } from 'axios';
 
-export const medicalPaymentColumns: ColumnDef<IMedicalPayment>[] = [
+export const agencyPaymentColumns: ColumnDef<IAgencyPayment>[] = [
   {
     accessorKey: 'transactionId.name',
     header: 'Purpose',
@@ -27,16 +27,20 @@ export const medicalPaymentColumns: ColumnDef<IMedicalPayment>[] = [
     header: 'Customer Name',
   },
   {
+    accessorKey: 'date',
+    header: 'Date',
+    cell: ({ row }) => {
+      const date = row.getValue('date') as Date;
+      return date ? new Date(date).toLocaleDateString() : '-';
+    },
+  },
+  {
+    accessorKey: 'agency',
+    header: 'Agency',
+  },
+  {
     accessorKey: 'amount',
     header: 'Amount',
-  },
-  {
-    accessorKey: 'paymentMode',
-    header: 'Payment Mode',
-  },
-  {
-    accessorKey: 'createdAt',
-    header: 'Created At',
   },
   {
     accessorKey: 'remarks',
@@ -46,18 +50,17 @@ export const medicalPaymentColumns: ColumnDef<IMedicalPayment>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const router = useRouter();
-      const deleteMedicalPayment = useDeleteMedicalPayment();
-      const medicalPayment = row.original;
+      const deleteAgencyPayment = useDeleteAgencyPayment();
 
-      const onClickEdit = (medicalPaymentId: string) => {
-        router.push(`/medical-payment/${medicalPaymentId}`);
+      const onClickEdit = (id: string) => {
+        router.push(`/agency-payment/${id}`);
       };
 
-      const onClickDelete = (medicalPaymentId: string) => {
-        deleteMedicalPayment.mutate(medicalPaymentId, {
+      const onClickDelete = (id: string) => {
+        deleteAgencyPayment.mutate(id, {
           onSuccess: (res: any) => {
-            successToast(res?.message || 'Medical payment deleted successfully');
-            router.push('/medical-payment/list');
+            successToast(res?.message || 'Agency payment deleted successfully');
+            router.push('/agency-payment/list');
           },
           onError: (error) => {
             const message =
@@ -66,6 +69,9 @@ export const medicalPaymentColumns: ColumnDef<IMedicalPayment>[] = [
           },
         });
       };
+      const payment = row.original;
+      // Fallback to _id if id is not present, or vice versa
+      const id = payment.id || payment._id;
 
       return (
         <DropdownMenu>
@@ -76,18 +82,13 @@ export const medicalPaymentColumns: ColumnDef<IMedicalPayment>[] = [
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(medicalPayment._id)}>
-              Copy Medical Payment ID
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(id || '')}>
+              Copy ID
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => onClickEdit(medicalPayment._id)}>
-              Edit
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onClickEdit(id || '')}>Edit</DropdownMenuItem>
 
-            <DropdownMenuItem
-              onClick={() => onClickDelete(medicalPayment._id)}
-              className="text-destructive"
-            >
+            <DropdownMenuItem onClick={() => onClickDelete(id || '')} className="text-destructive">
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -9,23 +9,8 @@ export interface IMedicalPayment {
   createdAt?: Date;
 }
 
-export interface MedicalPaymentList {
-  _id: string;
-  transactionId: {
-    name: string;
-    customerId: {
-      name: string;
-    };
-  };
-  amount: number;
-  paymentMode: string;
-  date: Date;
-  remarks: string;
-  createdAt: Date;
-}
-
-export interface MedicalPaymentsListResponse {
-  data: MedicalPaymentList[];
+export interface MedicalPaymentsResponse {
+  data: IMedicalPayment[];
   meta: {
     total: number;
     page: number;
