@@ -27,6 +27,7 @@ import { successToast } from '@/components/toast/SuccessToast';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const vfsColumns: ColumnDef<IVfs>[] = [
   {
@@ -62,7 +63,8 @@ export const vfsColumns: ColumnDef<IVfs>[] = [
     cell: ({ row }) => {
       const vfs = row.original;
       const router = useRouter();
-      const [isDialogOpen, setIsDialogOpen] = useState(false);
+      const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+      const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
       const deleteMutation = useDeleteVfs();
 
       const handleDelete = async () => {
@@ -70,7 +72,7 @@ export const vfsColumns: ColumnDef<IVfs>[] = [
           await deleteMutation.mutateAsync(vfs._id);
           router.push('/vfs/list');
           successToast('VFS deleted successfully');
-          setIsDialogOpen(false);
+          setIsDeleteDialogOpen(false);
         } catch (error) {
           toast.error('Failed to delete VFS');
         }
@@ -89,16 +91,27 @@ export const vfsColumns: ColumnDef<IVfs>[] = [
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(vfs._id)}>
                 Copy VFS ID
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push(`/vfs/${vfs._id}`)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
+              <DropdownMenuItem onClick={() => setIsOtpDialogOpen(true)}>Edit</DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <OtpVerificationDialog
+            open={isOtpDialogOpen}
+            onOpenChange={setIsOtpDialogOpen}
+            onVerified={() => router.push(`/vfs/${vfs._id}`)}
+            title="Verify to Edit VFS"
+            description="Please verify your identity with the OTP sent to your registered email before editing this VFS record."
+            purpose="EDIT_VFS"
+            module="vfs"
+          />
+
+          <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>

@@ -26,6 +26,7 @@ import { useDeleteTicket } from '@/lib/queries/ticket.mutation';
 import { successToast } from '@/components/toast/SuccessToast';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const ticketColumns: ColumnDef<ITicket>[] = [
   {
@@ -64,7 +65,8 @@ export const ticketColumns: ColumnDef<ITicket>[] = [
     cell: ({ row }) => {
       const ticket = row.original;
       const router = useRouter();
-      const [isDialogOpen, setIsDialogOpen] = useState(false);
+      const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+      const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
       const deleteMutation = useDeleteTicket();
 
       const handleDelete = async () => {
@@ -72,7 +74,7 @@ export const ticketColumns: ColumnDef<ITicket>[] = [
           await deleteMutation.mutateAsync(ticket._id);
           router.push('/ticket/list');
           successToast('Ticket deleted successfully');
-          setIsDialogOpen(false);
+          setIsDeleteDialogOpen(false);
         } catch (error) {
           toast.error('Failed to delete ticket');
         }
@@ -91,16 +93,27 @@ export const ticketColumns: ColumnDef<ITicket>[] = [
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(ticket._id)}>
                 Copy Ticket ID
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push(`/ticket/${ticket._id}`)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
+              <DropdownMenuItem onClick={() => setIsOtpDialogOpen(true)}>Edit</DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <OtpVerificationDialog
+            open={isOtpDialogOpen}
+            onOpenChange={setIsOtpDialogOpen}
+            onVerified={() => router.push(`/ticket/${ticket._id}`)}
+            title="Verify to Edit Ticket"
+            description="Please verify your identity with the OTP sent to your registered email before editing this ticket."
+            purpose="EDIT_TICKET"
+            module="ticket"
+          />
+
+          <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>

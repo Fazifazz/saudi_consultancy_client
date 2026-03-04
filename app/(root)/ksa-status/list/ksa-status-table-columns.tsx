@@ -29,6 +29,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const ksaStatusColumns = (): ColumnDef<IKsaStatus>[] => {
   const router = useRouter();
@@ -88,6 +89,7 @@ export const ksaStatusColumns = (): ColumnDef<IKsaStatus>[] => {
       cell: ({ row }) => {
         const item = row.original;
         const [isDialogOpen, setIsDialogOpen] = useState(false);
+        const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
 
         const handleDelete = async () => {
           try {
@@ -113,9 +115,7 @@ export const ksaStatusColumns = (): ColumnDef<IKsaStatus>[] => {
                 <DropdownMenuItem onClick={() => navigator.clipboard.writeText(item._id)}>
                   Copy KSA Status ID
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push(`/ksa-status/${item._id}`)}>
-                  Edit
-                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setIsOtpDialogOpen(true)}>Edit</DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-destructive"
                   onClick={() => setIsDialogOpen(true)}
@@ -124,6 +124,16 @@ export const ksaStatusColumns = (): ColumnDef<IKsaStatus>[] => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <OtpVerificationDialog
+              open={isOtpDialogOpen}
+              onOpenChange={setIsOtpDialogOpen}
+              onVerified={() => router.push(`/ksa-status/${item._id}`)}
+              title="Verify to Edit KSA Status"
+              description="Please verify your identity with the OTP sent to your registered email before editing this record."
+              purpose="EDIT_KSA_STATUS"
+              module="ksa-status"
+            />
 
             <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <AlertDialogContent>
