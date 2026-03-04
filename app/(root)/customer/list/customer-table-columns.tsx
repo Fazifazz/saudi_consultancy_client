@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ICustomer } from '@/types/customer';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -16,28 +17,11 @@ import { useDeleteCustomer } from '@/lib/queries/customer.mutation';
 import { successToast } from '@/components/toast/SuccessToast';
 import { destructiveToast } from '@/components/toast/DestructiveToast';
 import { AxiosError } from 'axios';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const customerColumns = (): ColumnDef<ICustomer>[] => {
   const router = useRouter();
   const deleteCustomer = useDeleteCustomer();
-
-  const onClickEdit = (customerId: string) => {
-    router.push(`/customer/${customerId}`);
-  };
-
-  const onClickDelete = (customerId: string) => {
-    deleteCustomer.mutate(customerId, {
-      onSuccess: (res: any) => {
-        successToast(res?.message || 'Customer deleted successfully');
-        router.push('/customer/list');
-      },
-      onError: (error) => {
-        const message =
-          error instanceof AxiosError ? error?.response?.data?.message : 'Deletion failed';
-        destructiveToast(message);
-      },
-    });
-  };
 
   return [
     {
@@ -64,30 +48,57 @@ export const customerColumns = (): ColumnDef<ICustomer>[] => {
       id: 'actions',
       cell: ({ row }) => {
         const customer = row.original;
+        const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
+
+        const onClickDelete = (customerId: string) => {
+          deleteCustomer.mutate(customerId, {
+            onSuccess: (res: any) => {
+              successToast(res?.message || 'Customer deleted successfully');
+              router.push('/customer/list');
+            },
+            onError: (error) => {
+              const message =
+                error instanceof AxiosError ? error?.response?.data?.message : 'Deletion failed';
+              destructiveToast(message);
+            },
+          });
+        };
 
         return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(customer._id)}>
-                Copy Customer ID
-              </DropdownMenuItem>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigator.clipboard.writeText(customer._id)}>
+                  Copy Customer ID
+                </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={() => onClickEdit(customer._id)}>Edit</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setIsOtpDialogOpen(true)}>Edit</DropdownMenuItem>
 
-              <DropdownMenuItem
-                onClick={() => onClickDelete(customer._id)}
-                className="text-destructive"
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuItem
+                  onClick={() => onClickDelete(customer._id)}
+                  className="text-destructive"
+                >
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <OtpVerificationDialog
+              open={isOtpDialogOpen}
+              onOpenChange={setIsOtpDialogOpen}
+              onVerified={() => router.push(`/customer/${customer._id}`)}
+              title="Verify to Edit Customer"
+              description="Please verify your identity with the OTP sent to your registered email before editing this customer."
+              purpose="EDIT_CUSTOMER"
+              module="customer"
+            />
+          </>
         );
       },
     },

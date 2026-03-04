@@ -27,6 +27,7 @@ import { successToast } from '@/components/toast/SuccessToast';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const medicalStatusColumns: ColumnDef<IMedicalStatus>[] = [
   {
@@ -70,7 +71,8 @@ export const medicalStatusColumns: ColumnDef<IMedicalStatus>[] = [
     cell: ({ row }) => {
       const medicalStatus = row.original;
       const router = useRouter();
-      const [isDialogOpen, setIsDialogOpen] = useState(false);
+      const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+      const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
       const deleteMutation = useDeleteMedicalStatus();
 
       const handleDelete = async () => {
@@ -78,7 +80,7 @@ export const medicalStatusColumns: ColumnDef<IMedicalStatus>[] = [
           await deleteMutation.mutateAsync(medicalStatus._id);
           router.push('/medical-status/list');
           successToast('Medical status deleted successfully');
-          setIsDialogOpen(false);
+          setIsDeleteDialogOpen(false);
         } catch (error) {
           toast.error('Failed to delete medical status');
         }
@@ -97,16 +99,27 @@ export const medicalStatusColumns: ColumnDef<IMedicalStatus>[] = [
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(medicalStatus._id)}>
                 Copy Medical Status ID
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => router.push(`/medical-status/${medicalStatus._id}`)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
+              <DropdownMenuItem onClick={() => setIsOtpDialogOpen(true)}>Edit</DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={() => setIsDeleteDialogOpen(true)}
+              >
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <OtpVerificationDialog
+            open={isOtpDialogOpen}
+            onOpenChange={setIsOtpDialogOpen}
+            onVerified={() => router.push(`/medical-status/${medicalStatus._id}`)}
+            title="Verify to Edit Medical Status"
+            description="Please verify your identity with the OTP sent to your registered email before editing this record."
+            purpose="EDIT_MEDICAL_STATUS"
+            module="medical-status"
+          />
+
+          <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>

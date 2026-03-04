@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation';
 import { useDeleteTransaction } from '@/lib/queries/transaction.mutation';
 import { successToast } from '@/components/toast/SuccessToast';
 import { toast } from 'sonner';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const transactionColumns: ColumnDef<ITransaction>[] = [
   {
@@ -52,7 +53,8 @@ export const transactionColumns: ColumnDef<ITransaction>[] = [
 
 function TransactionActionsCell({ transaction }: { transaction: ITransaction }) {
   const router = useRouter();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
   const deleteMutation = useDeleteTransaction();
 
   const handleDelete = async () => {
@@ -60,10 +62,18 @@ function TransactionActionsCell({ transaction }: { transaction: ITransaction }) 
       await deleteMutation.mutateAsync(transaction._id);
       router.push('/transaction/list');
       successToast('Transaction deleted successfully');
-      setIsDialogOpen(false);
+      setIsDeleteDialogOpen(false);
     } catch (error) {
       toast.error('Failed to delete transaction');
     }
+  };
+
+  const handleEditClick = () => {
+    setIsOtpDialogOpen(true);
+  };
+
+  const handleOtpVerified = () => {
+    router.push(`/transaction/${transaction._id}`);
   };
 
   return (
@@ -79,16 +89,29 @@ function TransactionActionsCell({ transaction }: { transaction: ITransaction }) 
           <DropdownMenuItem onClick={() => navigator.clipboard.writeText(transaction._id)}>
             Copy Transaction ID
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push(`/transaction/${transaction._id}`)}>
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
+          <DropdownMenuItem onClick={handleEditClick}>Edit</DropdownMenuItem>
+          <DropdownMenuItem
+            className="text-destructive"
+            onClick={() => setIsDeleteDialogOpen(true)}
+          >
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {/* OTP Verification Dialog */}
+      <OtpVerificationDialog
+        open={isOtpDialogOpen}
+        onOpenChange={setIsOtpDialogOpen}
+        onVerified={handleOtpVerified}
+        title="Verify to Edit Transaction"
+        description="For security, please verify your identity with the OTP sent to your registered email before editing this transaction."
+        purpose="EDIT_TRANSACTION"
+        module="transaction"
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>

@@ -2,6 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { Pencil, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +14,7 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { WORK_AGREEMENT_STATUS_ENUM } from '@/lib/constants/status';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
   {
@@ -182,6 +184,7 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
       const passportPossession = row.original;
       const router = useRouter();
       const { mutate: deletePassportPossession } = useDeletePassportPossession();
+      const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
 
       const handleDelete = () => {
         deletePassportPossession(passportPossession._id, {
@@ -199,19 +202,27 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
         });
       };
 
-      const handleEdit = () => {
-        router.push(`/passport-possession/edit/${passportPossession._id}`);
-      };
-
       return (
-        <div className="flex items-center gap-2">
-          <Button variant="default" size="icon" onClick={handleEdit}>
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button variant="destructive" size="icon" onClick={handleDelete}>
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
+        <>
+          <div className="flex items-center gap-2">
+            <Button variant="default" size="icon" onClick={() => setIsOtpDialogOpen(true)}>
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button variant="destructive" size="icon" onClick={handleDelete}>
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <OtpVerificationDialog
+            open={isOtpDialogOpen}
+            onOpenChange={setIsOtpDialogOpen}
+            onVerified={() => router.push(`/passport-possession/edit/${passportPossession._id}`)}
+            title="Verify to Edit Passport Possession"
+            description="Please verify your identity with the OTP sent to your registered email before editing this record."
+            purpose="EDIT_PASSPORT_POSSESSION"
+            module="passport-possession"
+          />
+        </>
       );
     },
   },

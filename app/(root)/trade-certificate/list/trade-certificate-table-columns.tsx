@@ -27,6 +27,7 @@ import { successToast } from '@/components/toast/SuccessToast';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
 
 export const tradeCertificateColumns: ColumnDef<ITradeCertificate>[] = [
   {
@@ -74,7 +75,8 @@ export const tradeCertificateColumns: ColumnDef<ITradeCertificate>[] = [
     cell: ({ row }) => {
       const tradeCertificate = row.original;
       const router = useRouter();
-      const [isDialogOpen, setIsDialogOpen] = useState(false);
+      const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+      const [isOtpDialogOpen, setIsOtpDialogOpen] = useState(false);
       const deleteMutation = useDeleteTradeCertificate();
 
       const handleDelete = async () => {
@@ -82,7 +84,7 @@ export const tradeCertificateColumns: ColumnDef<ITradeCertificate>[] = [
           await deleteMutation.mutateAsync(tradeCertificate._id);
           router.push('/trade-certificate/list');
           successToast('Trade certificate deleted successfully');
-          setIsDialogOpen(false);
+          setIsDeleteDialogOpen(false);
         } catch (error) {
           toast.error('Failed to delete trade certificate');
         }
@@ -101,18 +103,27 @@ export const tradeCertificateColumns: ColumnDef<ITradeCertificate>[] = [
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(tradeCertificate._id)}>
                 Copy Trade Certificate ID
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsOtpDialogOpen(true)}>Edit</DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => router.push(`/trade-certificate/${tradeCertificate._id}`)}
+                className="text-destructive"
+                onClick={() => setIsDeleteDialogOpen(true)}
               >
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive" onClick={() => setIsDialogOpen(true)}>
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <OtpVerificationDialog
+            open={isOtpDialogOpen}
+            onOpenChange={setIsOtpDialogOpen}
+            onVerified={() => router.push(`/trade-certificate/${tradeCertificate._id}`)}
+            title="Verify to Edit Trade Certificate"
+            description="Please verify your identity with the OTP sent to your registered email before editing this record."
+            purpose="EDIT_TRADE_CERTIFICATE"
+            module="trade-certificate"
+          />
+
+          <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>

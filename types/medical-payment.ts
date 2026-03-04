@@ -1,4 +1,4 @@
-export interface IMedicalPayment {
+export interface IMedicalPaymentList {
   _id: string;
   transactionId: string;
   amount: number;
@@ -10,7 +10,7 @@ export interface IMedicalPayment {
 }
 
 export interface MedicalPaymentsResponse {
-  data: IMedicalPayment[];
+  data: IMedicalPaymentList[];
   meta: {
     total: number;
     page: number;
