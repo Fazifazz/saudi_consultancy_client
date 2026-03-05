@@ -19,7 +19,7 @@ import {
   useUpdateMedicalPayment,
 } from '@/lib/queries/medical-payment.mutation';
 import { paymentModeOptions } from '@/lib/constants/payments';
-import { IMedicalPayment } from '@/types/medical-payment';
+import { IMedicalPaymentList } from '@/types/medical-payment';
 import { CommonListForSelect } from '@/types/common';
 
 export function MedicalPaymentForm({
@@ -30,7 +30,7 @@ export function MedicalPaymentForm({
   ...props
 }: React.ComponentProps<'div'> & {
   transactions: CommonListForSelect[];
-  medicalPaymentDetails?: IMedicalPayment;
+  medicalPaymentDetails?: IMedicalPaymentList;
 }) {
   const router = useRouter();
   const createMedicalPayment = useCreateMedicalPayment();
