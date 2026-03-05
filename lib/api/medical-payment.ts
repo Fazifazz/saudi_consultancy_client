@@ -1,6 +1,6 @@
 import { isValidDateString } from '../date';
 import { getToken } from '../token';
-import { MedicalPaymentsListResponse } from '@/types/medical-payment';
+import { MedicalPaymentsResponse } from '@/types/medical-payment';
 
 interface FetchMedicalPaymentsParams {
   page?: number;
@@ -14,7 +14,7 @@ interface FetchMedicalPaymentsParams {
 
 export async function fetchMedicalPayments(
   params?: FetchMedicalPaymentsParams
-): Promise<MedicalPaymentsListResponse> {
+): Promise<MedicalPaymentsResponse> {
   const searchParams = new URLSearchParams();
   const token = await getToken();
 
