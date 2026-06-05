@@ -7,5 +7,11 @@ export const TRANSACTION_PURPOSES = [
   { value: 'Ticket', label: 'Ticket' },
   { value: 'Medical', label: 'Medical' },
   { value: 'VFS Approvement', label: 'VFS Approvement' },
+  { value: 'Emigration', label: 'Emigration' },
+  { value: 'Translation', label: 'Translation' },
+  { value: 'Visa Stamping', label: 'Visa Stamping' },
+  { value: 'Job Search Visa', label: 'Job Search Visa' },
+  { value: 'TC Appointment', label: 'TC Appointment' },
+  { value: 'Gamca Appointment', label: 'Gamca Appointment' },
   { value: 'Others', label: 'Others' },
 ];

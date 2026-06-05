@@ -121,8 +121,6 @@ export function TicketForm({
                     name="travellingDate"
                     label="Travelling Date"
                   />
-                </div>
-                <div className="space-y-4">
                   <CommonSelect
                     control={control}
                     name="paymentMode"

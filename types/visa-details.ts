@@ -8,6 +8,8 @@ export interface IVisaDetail {
   profession: string;
   agency: string;
   remarks: string;
+  wakalaAgency?: string;
+  agencyCharge?: number;
   isDeleted: boolean;
   createdAt?: Date;
 }

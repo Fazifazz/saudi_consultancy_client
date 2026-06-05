@@ -49,7 +49,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'div'>) 
       }
 
       successToast('Logged in successfully!');
-      router.replace('/');
+      router.replace('/customer/list');
     });
   };
 

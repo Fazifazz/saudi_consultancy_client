@@ -18,6 +18,7 @@ import { successToast } from '@/components/toast/SuccessToast';
 import { destructiveToast } from '@/components/toast/DestructiveToast';
 import { AxiosError } from 'axios';
 import { OtpVerificationDialog } from '@/components/otp/OtpVerificationDialog';
+import { format } from 'date-fns/format';
 
 export const customerColumns = (): ColumnDef<ICustomer>[] => {
   const router = useRouter();
@@ -43,6 +44,10 @@ export const customerColumns = (): ColumnDef<ICustomer>[] => {
     {
       accessorKey: 'createdAt',
       header: 'Created At',
+      cell: ({ row }) => {
+        const date = row.getValue('createdAt') as Date;
+        return date ? format(new Date(date), 'PPP') : '-';
+      },
     },
     {
       id: 'actions',
