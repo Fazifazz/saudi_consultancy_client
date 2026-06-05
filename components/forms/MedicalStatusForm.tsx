@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FieldGroup } from '@/components/ui/field';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { medicalStatusSchema, type MedicalStatusSchema } from '@/lib/validations/medical-status';
 import CommonSelect from '../core/CommonSelect';
@@ -18,7 +18,17 @@ import { successToast } from '../toast/SuccessToast';
 import CommonDatePicker from '../core/CommonDatePicker';
 import CommonTextArea from '../core/CommonTextArea';
 import { IMedicalStatus } from '@/types/medical-status';
-import { MEDICAL_CENTERS, MEDICAL_STATUS } from '@/lib/constants/medical-status';
+import {
+  CALICUT_SUB_CENTERS,
+  ERNAKULAM_SUB_CENTERS,
+  MANJERI_SUB_CENTERS,
+  MEDICAL_CENTERS,
+  MEDICAL_STATUS,
+  TIRUR_SUB_CENTERS,
+  TRIVANDRUM_SUB_CENTERS,
+} from '@/lib/constants/medical-status';
+import CommonTextInput from '../core/CommonTextInput';
+import { paymentModeOptions } from '@/lib/constants/payments';
 
 export function MedicalStatusForm({
   className,
@@ -41,6 +51,7 @@ export function MedicalStatusForm({
       ? {
           transactionId: medicalStatusDetails.transactionId,
           center: medicalStatusDetails.center,
+          subCenter: medicalStatusDetails.subCenter || '',
           slipDate: medicalStatusDetails.slipDate
             ? new Date(medicalStatusDetails.slipDate)
             : undefined,
@@ -51,10 +62,19 @@ export function MedicalStatusForm({
             : undefined,
           status: medicalStatusDetails.status,
           remarks: medicalStatusDetails.remarks || '',
+          paymentDate: medicalStatusDetails.paymentDate
+            ? new Date(medicalStatusDetails.paymentDate)
+            : undefined,
+          mofaUpdateDate: medicalStatusDetails.mofaUpdateDate
+            ? new Date(medicalStatusDetails.mofaUpdateDate)
+            : undefined,
+          paymentAmount: medicalStatusDetails.paymentAmount || 0,
+          paymentMode: medicalStatusDetails.paymentMode || '',
         }
       : {
           transactionId: '',
           center: '',
+          subCenter: '',
           slipDate: undefined,
           medicalDate: new Date(),
           statusUpdateDate: new Date(),
@@ -62,6 +82,11 @@ export function MedicalStatusForm({
           status: '',
           remarks: '',
         },
+  });
+
+  const medicalCenter = useWatch({
+    control,
+    name: 'center',
   });
 
   const onSubmit = (values: MedicalStatusSchema) => {
@@ -90,6 +115,16 @@ export function MedicalStatusForm({
       });
     }
   };
+
+  const subCentersMap: any = {
+    Manjeri: MANJERI_SUB_CENTERS,
+    Calicut: CALICUT_SUB_CENTERS,
+    Ernakulam: ERNAKULAM_SUB_CENTERS,
+    Tirur: TIRUR_SUB_CENTERS,
+    Trivandrum: TRIVANDRUM_SUB_CENTERS,
+  };
+
+  const subCenters = subCentersMap[medicalCenter] || [];
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
@@ -132,6 +167,18 @@ export function MedicalStatusForm({
                     label="Medical Date"
                     placeholder="Select medical date"
                   />
+                  <CommonTextInput
+                    control={control}
+                    name="paymentAmount"
+                    label="Amount"
+                    type="number"
+                  />
+                  <CommonSelect
+                    control={control}
+                    name="paymentMode"
+                    label="Payment Mode"
+                    options={paymentModeOptions || []}
+                  />
                 </div>
                 <div className="space-y-4">
                   <CommonDatePicker
@@ -140,11 +187,29 @@ export function MedicalStatusForm({
                     label="Status Update Date"
                     placeholder="Select status update date"
                   />
+                  <CommonSelect
+                    control={control}
+                    name="subCenter"
+                    label="Sub-Center"
+                    options={subCenters}
+                  />
                   <CommonDatePicker
                     control={control}
                     name="revisitDate"
                     label="Revisit Date"
                     placeholder="Select revisit date"
+                  />
+                  <CommonDatePicker
+                    control={control}
+                    name="paymentDate"
+                    label="Payment Date"
+                    placeholder="Select revisit date"
+                  />
+                  <CommonDatePicker
+                    control={control}
+                    name="mofaUpdateDate"
+                    label="Mofa Update Date"
+                    placeholder="Select mofa update date"
                   />
                   <CommonSelect
                     control={control}

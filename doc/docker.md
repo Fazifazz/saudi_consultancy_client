@@ -248,16 +248,19 @@ docker restart saudi-consultancy-client
 ## Troubleshooting
 
 ### Check container status
+
 ```bash
 docker inspect saudi-consultancy-client
 ```
 
 ### Check resource usage
+
 ```bash
 docker stats saudi-consultancy-client
 ```
 
 ### View container processes
+
 ```bash
 docker top saudi-consultancy-client
 ```

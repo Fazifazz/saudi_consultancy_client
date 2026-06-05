@@ -51,6 +51,8 @@ export function VisaDetailsForm({
           paymentMode: visaDetailDetails.paymentMode || '',
           profession: visaDetailDetails.profession || '',
           agency: visaDetailDetails.agency || '',
+          wakalaAgency: visaDetailDetails.wakalaAgency || '',
+          agencyCharge: visaDetailDetails.agencyCharge || 0,
           remarks: visaDetailDetails.remarks || '',
         }
       : {
@@ -141,6 +143,18 @@ export function VisaDetailsForm({
                     options={PROFESSIONS}
                   />
                   <CommonSelect control={control} name="agency" label="Agency" options={AGENCIES} />
+                  <CommonTextInput
+                    control={control}
+                    name="wakalaAgency"
+                    label="Wakala Agency"
+                    type="text"
+                  />
+                  <CommonTextInput
+                    control={control}
+                    name="agencyCharge"
+                    label="Agency Charge"
+                    type="number"
+                  />
                   <CommonTextArea
                     control={control}
                     name="remarks"

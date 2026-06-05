@@ -7,4 +7,7 @@ export const paymentModeOptions = [
   { label: 'SH ICICI', value: 'SH ICICI' },
   { label: 'NAJMU A/C', value: 'NAJMU A/C' },
   { label: 'AGENCY', value: 'AGENCY' },
+  { label: 'HDFC', value: 'HDFC' },
+  { label: 'SBI', value: 'SBI' },
+  { label: 'Others', value: 'Others' },
 ];

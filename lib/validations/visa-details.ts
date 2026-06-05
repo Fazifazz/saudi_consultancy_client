@@ -9,6 +9,8 @@ export const visaDetailsSchema = z.object({
   paymentMode: z.string().min(1, 'Payment mode is required'),
   profession: z.string().min(1, 'Profession is required'),
   agency: z.string().min(1, 'Agency is required'),
+  wakalaAgency: z.string().optional(),
+  agencyCharge: z.number().optional(),
   remarks: z.string().optional(),
 });
 

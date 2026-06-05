@@ -103,14 +103,14 @@ export function VfsForm({
                     label="Center"
                     options={VFS_CENTERS || []}
                   />
+                </div>
+                <div className="space-y-4">
                   <CommonDatePicker
                     control={control}
                     name="date"
                     label="VFS Date"
                     placeholder="Select VFS date"
                   />
-                </div>
-                <div className="space-y-4">
                   <CommonTextArea
                     control={control}
                     name="remarks"

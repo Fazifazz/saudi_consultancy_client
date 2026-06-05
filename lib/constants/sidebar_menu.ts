@@ -44,6 +44,26 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     ],
   },
   {
+    title: 'Medical Status',
+    url: '/medical-status',
+    icon: BriefcaseMedicalIcon,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/medical-status/create' },
+      { title: 'List', url: '/medical-status/list' },
+    ],
+  },
+  {
+    title: 'Medical Payment',
+    url: '/medical-payment',
+    icon: IdCardLanyard,
+    isActive: false,
+    items: [
+      { title: 'Create', url: '/medical-payment/create' },
+      { title: 'List', url: '/medical-payment/list' },
+    ],
+  },
+  {
     title: 'Visa Details',
     url: '#',
     icon: IdCard,
@@ -54,23 +74,13 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     ],
   },
   {
-    title: 'Tickets',
-    url: '/ticket',
-    icon: TicketsPlane,
+    title: 'Trade Certificate',
+    url: '/trade-certificate',
+    icon: LayoutGrid,
     isActive: false,
     items: [
-      { title: 'Create', url: '/ticket/create' },
-      { title: 'List', url: '/ticket/list' },
-    ],
-  },
-  {
-    title: 'Medical Status',
-    url: '/medical-status',
-    icon: BriefcaseMedicalIcon,
-    isActive: false,
-    items: [
-      { title: 'Create', url: '/medical-status/create' },
-      { title: 'List', url: '/medical-status/list' },
+      { title: 'Create', url: '/trade-certificate/create' },
+      { title: 'List', url: '/trade-certificate/list' },
     ],
   },
   {
@@ -95,23 +105,23 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     // className:'bg-cyan-500 dark:bg-cyan-700 text-white'
   },
   {
-    title: 'Medical Payment',
-    url: '/medical-payment',
+    title: 'Agency Payment',
+    url: '/agency-payment',
     icon: IdCardLanyard,
     isActive: false,
     items: [
-      { title: 'Create', url: '/medical-payment/create' },
-      { title: 'List', url: '/medical-payment/list' },
+      { title: 'Create', url: '/agency-payment/create' },
+      { title: 'List', url: '/agency-payment/list' },
     ],
   },
   {
-    title: 'Trade Certificate',
-    url: '/trade-certificate',
-    icon: LayoutGrid,
+    title: 'Tickets',
+    url: '/ticket',
+    icon: TicketsPlane,
     isActive: false,
     items: [
-      { title: 'Create', url: '/trade-certificate/create' },
-      { title: 'List', url: '/trade-certificate/list' },
+      { title: 'Create', url: '/ticket/create' },
+      { title: 'List', url: '/ticket/list' },
     ],
   },
   {
@@ -122,16 +132,6 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     items: [
       { title: 'Create', url: '/ksa-status/create' },
       { title: 'List', url: '/ksa-status/list' },
-    ],
-  },
-  {
-    title: 'Agency Payment',
-    url: '/agency-payment',
-    icon: IdCardLanyard,
-    isActive: false,
-    items: [
-      { title: 'Create', url: '/agency-payment/create' },
-      { title: 'List', url: '/agency-payment/list' },
     ],
   },
 ];
