@@ -94,7 +94,7 @@ export const SIDEBAR_MENU: SidebarMenuItem[] = [
     ],
   },
   {
-    title: 'Passport Possession',
+    title: 'Passport Posission',
     url: '/passport-possession',
     icon: IdCardLanyard,
     items: [

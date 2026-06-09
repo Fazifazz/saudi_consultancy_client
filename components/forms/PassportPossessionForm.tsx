@@ -79,27 +79,27 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
     if (!id) {
       createPassportPossession(data, {
         onSuccess: () => {
-          successToast('Passport Possession created successfully');
+          successToast('Passport Posission created successfully');
           form.reset(defaultValues);
         },
         onError: (error) => {
           const errorMessage =
             error instanceof AxiosError ? error?.response?.data?.message : error?.message;
-          destructiveToast(errorMessage || 'Failed to create Passport Possession');
+          destructiveToast(errorMessage || 'Failed to create Passport Posission');
         },
       });
     } else {
       const updatePayload = { ...data, _id: id };
       updatePassportPossession(updatePayload, {
         onSuccess: () => {
-          successToast('Passport Possession updated successfully');
+          successToast('Passport Posission updated successfully');
           form.reset(defaultValues);
           router.push('/passport-possession/list');
         },
         onError: (error) => {
           const errorMessage =
             error instanceof AxiosError ? error?.response?.data?.message : error?.message;
-          destructiveToast(errorMessage || 'Failed to update Passport Possession');
+          destructiveToast(errorMessage || 'Failed to update Passport Posission');
         },
       });
     }
@@ -112,7 +112,7 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
   return (
     <Card className="w-full">
       <CardHeader className="flex items-center justify-between">
-        <CardTitle>Passport Possession</CardTitle>
+        <CardTitle>Passport Posission</CardTitle>
         <Button variant="outline" onClick={() => router.push('/passport-possession/list')}>
           List
         </Button>
@@ -127,8 +127,8 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
           <CommonSelect
             control={form.control}
             name="transactionId"
-            label="Choose a Purpose of customer"
-            placeholder="Select Purpose of customer"
+            label="Transaction"
+            placeholder="Transaction"
             options={transactions}
           />
           <FieldGroup>
@@ -218,7 +218,7 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
             </div>
           </FieldGroup>
           <FieldGroup>
-            <Label className="bg-red-200 dark:bg-red-800 p-3 rounded">In Office</Label>
+            <Label className="bg-red-200 dark:bg-red-800 p-3 rounded">PP Recieved at Office</Label>
             <div className="flex flex-wrap lg:flex-nowrap gap-3">
               <CommonSelect
                 control={form.control}
@@ -237,7 +237,7 @@ export function PassportPossessionForm({ transactions, id, data }: PassportPosse
             </div>
           </FieldGroup>
           <FieldGroup>
-            <Label className="bg-purple-200 dark:bg-purple-800 p-3 rounded">To Client</Label>
+            <Label className="bg-purple-200 dark:bg-purple-800 p-3 rounded">PP Recieved To Client</Label>
             <div className="flex flex-wrap lg:flex-nowrap gap-3">
               <CommonSelect
                 control={form.control}

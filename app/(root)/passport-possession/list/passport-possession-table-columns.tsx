@@ -189,14 +189,14 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
       const handleDelete = () => {
         deletePassportPossession(passportPossession._id, {
           onSuccess: () => {
-            successToast('Passport Possession deleted successfully');
+            successToast('Passport Posission deleted successfully');
             router.refresh();
           },
           onError: (error) => {
             const errorMessage =
               error instanceof AxiosError
                 ? error.response?.data.message
-                : 'Failed to delete Passport Possession';
+                : 'Failed to delete Passport Posission';
             destructiveToast(errorMessage);
           },
         });
@@ -217,7 +217,7 @@ export const passportPossessionColumns: ColumnDef<IPassportPossession>[] = [
             open={isOtpDialogOpen}
             onOpenChange={setIsOtpDialogOpen}
             onVerified={() => router.push(`/passport-possession/edit/${passportPossession._id}`)}
-            title="Verify to Edit Passport Possession"
+            title="Verify to Edit Passport Posission"
             description="Please verify your identity with the OTP sent to your registered email before editing this record."
             purpose="EDIT_PASSPORT_POSSESSION"
             module="passport-possession"
