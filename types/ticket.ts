@@ -6,6 +6,8 @@ export interface ITicket {
   travellingDate: Date;
   airlineCompany: string;
   paymentMode: string;
+  issuedAgency: string;
+  ticketFare: number;
   isDeleted: Boolean;
   createdAt: Date;
 }

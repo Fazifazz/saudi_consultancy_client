@@ -17,6 +17,7 @@ import { useCreateTicket, useUpdateTicket } from '@/lib/queries/ticket.mutation'
 import { travelTypeOptions } from '@/lib/constants/travel';
 import { paymentModeOptions } from '@/lib/constants/payments';
 import { ITicket } from '@/types/ticket';
+import { AGENCIES } from '@/lib/constants/agency';
 
 export function TicketForm({
   className,
@@ -43,6 +44,8 @@ export function TicketForm({
           travellingDate: new Date(ticketDetails.travellingDate),
           airlineCompany: ticketDetails.airlineCompany,
           paymentMode: ticketDetails.paymentMode,
+          issuedAgency: ticketDetails.issuedAgency,
+          ticketFare: ticketDetails.ticketFare,
         }
       : {
           transactionId: '',
@@ -51,6 +54,8 @@ export function TicketForm({
           travellingDate: new Date(),
           airlineCompany: '',
           paymentMode: '',
+          issuedAgency: '',
+          ticketFare: 0,
         },
   });
 
@@ -113,6 +118,12 @@ export function TicketForm({
                     name="airlineCompany"
                     label="Airline Company"
                   />
+                  <CommonSelect
+                    control={control}
+                    name="issuedAgency"
+                    label="Issued Agency"
+                    options={AGENCIES}
+                  />
                 </div>
                 <div className="space-y-4">
                   <CommonDatePicker control={control} name="bookingDate" label="Booking Date" />
@@ -126,6 +137,12 @@ export function TicketForm({
                     name="paymentMode"
                     label="Payment Mode"
                     options={paymentModeOptions}
+                  />
+                  <CommonTextInput
+                    control={control}
+                    type="number"
+                    name="ticketFare"
+                    label="Ticket Fare"
                   />
                 </div>
               </div>

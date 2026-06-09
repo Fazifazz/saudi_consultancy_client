@@ -6,6 +6,8 @@ export const agencyPaymentSchema = z.object({
   date: z.date({ error: 'Date is required' }),
   amount: z.number({ error: 'Amount must be number' }).min(1, 'Amount must be greater than 0'),
   agency: z.string().min(1, 'Agency is required'),
+  paymentMode: z.string().min(1, 'Payment mode is required'),
+  accountHolder: z.string().min(2, 'Account Holder must be at least 2 characters long'),
   remarks: z.string().optional(),
 });
 

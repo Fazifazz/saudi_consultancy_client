@@ -43,6 +43,10 @@ export const agencyPaymentColumns: ColumnDef<IAgencyPayment>[] = [
     header: 'Amount',
   },
   {
+    accessorKey: 'paymentMode',
+    header: 'Payment Mode',
+  },
+  {
     accessorKey: 'remarks',
     header: 'Remarks',
   },
