@@ -1,4 +1,8 @@
 export const paymentModeOptions = [
+  { label: 'G PAY', value: 'G PAY' },
+  { label: 'A/C', value: 'A/C' },
+  { label: 'BANK DEPOSIT', value: 'BANK DEPOSIT' },
+  { label: 'BY CASH', value: 'BY CASH' },
   { label: 'A/C SAUDI', value: 'A/C SAUDI' },
   { label: 'SHAHUL GPAY', value: 'SHAHUL GPAY' },
   { label: 'SH FDRL', value: 'SH FDRL' },

@@ -8,10 +8,10 @@ export interface ITradeCertificate {
   center: string;
   tcStatus: string;
 
-  tcSettingAmount: number;
-  tcSettingAmountCenter: string;
-  tcSettingAgency: string;
-  tcSettingDate: Date;
+  // tcSettingAmount: number;
+  // tcSettingAmountCenter: string;
+  // tcSettingAgency: string;
+  // tcSettingDate: Date;
 
   tcAppointmentAmount: number;
   tcAppointmentAmountCenter: string;

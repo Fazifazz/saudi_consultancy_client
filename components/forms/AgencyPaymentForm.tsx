@@ -21,6 +21,7 @@ import { AGENCIES } from '@/lib/constants/agency';
 import { IAgencyPayment } from '@/types/agency-payment';
 import { CommonListForSelect } from '@/types/common';
 import CommonTextInput from '../core/CommonTextInput';
+import { paymentModeOptions } from '@/lib/constants/payments';
 
 export function AgencyPaymentForm({
   className,
@@ -46,6 +47,8 @@ export function AgencyPaymentForm({
           date: agencyPaymentDetails.date ? new Date(agencyPaymentDetails.date) : new Date(),
           amount: agencyPaymentDetails.amount || 0,
           agency: agencyPaymentDetails.agency || '',
+          paymentMode: agencyPaymentDetails.paymentMode || '',
+          accountHolder: agencyPaymentDetails.accountHolder || '',
           remarks: agencyPaymentDetails.remarks || '',
         }
       : {
@@ -107,6 +110,13 @@ export function AgencyPaymentForm({
                   <CommonTextInput control={control} name="amount" label="Amount" type="number" />
                 </div>
                 <div className="space-y-4">
+                  <CommonTextInput control={control} name="accountHolder" label="Account Holder" />
+                  <CommonSelect
+                    control={control}
+                    name="paymentMode"
+                    label="Payment Mode"
+                    options={paymentModeOptions}
+                  />
                   <CommonTextArea
                     control={control}
                     name="remarks"

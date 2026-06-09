@@ -5,6 +5,8 @@ export interface IAgencyPayment {
   date: Date;
   amount: number;
   agency: string;
+  accountHolder: string;
+  paymentMode: string;
   remarks: string;
   isDeleted?: boolean;
   createdAt?: Date;

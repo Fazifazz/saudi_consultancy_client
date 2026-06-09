@@ -59,12 +59,12 @@ export function TradeCertificateForm({
           center: tradeCertificateDetails.center,
           tcStatus: tradeCertificateDetails.tcStatus,
 
-          tcSettingAmount: tradeCertificateDetails.tcSettingAmount,
-          tcSettingAmountCenter: tradeCertificateDetails.tcSettingAmountCenter,
-          tcSettingAgency: tradeCertificateDetails.tcSettingAgency,
-          tcSettingDate: tradeCertificateDetails.tcSettingDate
-            ? new Date(tradeCertificateDetails.tcSettingDate)
-            : undefined,
+          // tcSettingAmount: tradeCertificateDetails.tcSettingAmount,
+          // tcSettingAmountCenter: tradeCertificateDetails.tcSettingAmountCenter,
+          // tcSettingAgency: tradeCertificateDetails.tcSettingAgency,
+          // tcSettingDate: tradeCertificateDetails.tcSettingDate
+          //   ? new Date(tradeCertificateDetails.tcSettingDate)
+          //   : undefined,
 
           tcAppointmentAmount: tradeCertificateDetails.tcAppointmentAmount,
           tcAppointmentAmountCenter: tradeCertificateDetails.tcAppointmentAmountCenter,
@@ -83,10 +83,10 @@ export function TradeCertificateForm({
           center: '',
           tcStatus: '',
 
-          tcSettingAmount: undefined,
-          tcSettingAmountCenter: '',
-          tcSettingAgency: '',
-          tcSettingDate: new Date(),
+          // tcSettingAmount: undefined,
+          // tcSettingAmountCenter: '',
+          // tcSettingAgency: '',
+          // tcSettingDate: new Date(),
 
           tcAppointmentAmount: undefined,
           tcAppointmentAmountCenter: '',
@@ -96,10 +96,10 @@ export function TradeCertificateForm({
         },
   });
 
-  const tcSettingCenter = useWatch({
-    control,
-    name: 'tcSettingAmountCenter',
-  });
+  // const tcSettingCenter = useWatch({
+  //   control,
+  //   name: 'tcSettingAmountCenter',
+  // });
 
   const tcAppointmentCenter = useWatch({
     control,
@@ -192,7 +192,7 @@ export function TradeCertificateForm({
                   options={TRADE_CERTIFICATE_CENTERS || []}
                 />
 
-                {/* ============ TC SETTING SECTION ============ */}
+                {/* ============ TC SETTING SECTION ============
                 <h3 className="col-span-2 mt-6 text-lg font-semibold text-gray-700">
                   TC Setting Details
                 </h3>
@@ -221,7 +221,7 @@ export function TradeCertificateForm({
                   />
                 )}
 
-                <CommonDatePicker control={control} name="tcSettingDate" label="TC Setting Date" />
+                <CommonDatePicker control={control} name="tcSettingDate" label="TC Setting Date" /> */}
 
                 {/* ============ TC APPOINTMENT SECTION ============ */}
                 <h3 className="col-span-2 mt-6 text-lg font-semibold text-gray-700">
